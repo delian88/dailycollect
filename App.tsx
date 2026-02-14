@@ -33,7 +33,10 @@ import {
   FileText,
   Target,
   Rocket,
-  Heart
+  Heart,
+  Search,
+  PieChart,
+  Shield
 } from 'lucide-react';
 import USSDSimulator from './components/USSDSimulator';
 import BusinessAdvisor from './components/BusinessAdvisor';
@@ -89,7 +92,11 @@ const TRANSLATIONS = {
     },
     stories: {
       title: "Stories from the Market",
-      sub: "Real impact on real traders across Nigeria."
+      sub: "Real impact on real traders across Nigeria.",
+      items: [
+        { name: "Malam Yusuf", role: "Tomato Wholesaler, Kano", text: "Daily Collect has saved me from the fear of carrying cash home after a long day in Sabon Gari market." },
+        { name: "Mrs. Adebayo", role: "Artisan, Lagos", text: "Paying my market dues is now so easy. I just dial *555# and I am compliant. No more harassment." }
+      ]
     },
     footer: {
       desc: "Leading USSD revenue aggregator for Nigeria's informal heartbeat. From markets to banks.",
@@ -138,7 +145,11 @@ const TRANSLATIONS = {
     },
     stories: {
       title: "Labarai daga Kasuwa",
-      sub: "Tasiri na gaske akan yan kasuwa a fadin Najeriya."
+      sub: "Tasiri na gaske akan yan kasuwa a fadin Najeriya.",
+      items: [
+        { name: "Malam Yusuf", role: "Me sayar da Tumatir, Kano", text: "Daily Collect ya taba taimaka mini sosai wajen kiyaye kudadena daga barayi." },
+        { name: "Mrs. Adebayo", role: "Mai sana'ar hannu, Lagos", text: "Biyan kudaden kungiya ya zama abu mai sauki yanzu." }
+      ]
     },
     footer: {
       desc: "Babban mai tara kudaden shiga na USSD ga zuciyar Najeriya. Daga kasuwanni zuwa bankuna.",
@@ -187,7 +198,11 @@ const TRANSLATIONS = {
     },
     stories: {
       title: "Àwọn Ìtàn láti Ọjà",
-      sub: "Ìpa gidi lórí àwọn oníṣòwò kárí Nàìjíríà."
+      sub: "Ìpa gidi lórí àwọn oníṣòwò kárí Nàìjíríà.",
+      items: [
+        { name: "Malam Yusuf", role: "Tomato Wholesaler, Kano", text: "Daily Collect has saved me from the fear of carrying cash." },
+        { name: "Mrs. Adebayo", role: "Artisan, Lagos", text: "Paying my market dues is now so easy." }
+      ]
     },
     footer: {
       desc: "Olùkójọ kudaden shiga USSD tó jà fáfá fún Nàìjíríà. Láti ọjà sí báńkì.",
@@ -236,7 +251,11 @@ const TRANSLATIONS = {
     },
     stories: {
       title: "Akụkọ si n'Ahịa",
-      sub: "Ezigbo mmetụta n'ahụ ndị ahịa na Naịjirịa niile."
+      sub: "Ezigbo mmetụta n'ahụ ndị ahịa na Naịjirịa niile.",
+      items: [
+        { name: "Malam Yusuf", role: "Tomato Wholesaler, Kano", text: "Daily Collect has saved me from the fear of carrying cash." },
+        { name: "Mrs. Adebayo", role: "Artisan, Lagos", text: "Paying my market dues is now so easy." }
+      ]
     },
     footer: {
       desc: "Onye ndu na nchịkọta kudaden shiga USSD maka Naịjirịa. Site n'ahịa gaa n'ụlọ akụ.",
@@ -447,6 +466,7 @@ const App: React.FC = () => {
 
   const HomeView = () => (
     <main className="animate-in fade-in duration-700">
+      {/* Hero Section */}
       <section className="relative pt-32 lg:pt-48 pb-24 lg:pb-32 bg-[#1a2e2e] overflow-hidden">
         <div className="stars-container">{renderStars(70)}</div>
         <div className="container mx-auto px-4 relative z-10 flex flex-col lg:flex-row items-center gap-16">
@@ -455,11 +475,15 @@ const App: React.FC = () => {
               <StarIcon size={14} className="fill-emerald-400 animate-pulse" /> <span>{t.hero.badge}</span>
             </div>
             <h1 className="text-5xl md:text-7xl lg:text-8xl font-black text-white mb-8 tracking-tighter leading-none">
-              {t.hero.title}
+              {t.hero.title.split('.').map((part, i) => (
+                <React.Fragment key={i}>
+                  {i === 1 ? <span className="shining-text">{part}</span> : part}
+                </React.Fragment>
+              ))}
             </h1>
             <p className="text-xl text-emerald-100/60 mb-10 max-w-2xl mx-auto lg:mx-0 font-medium">{t.hero.sub}</p>
             <div className="flex flex-col sm:flex-row gap-5 justify-center lg:justify-start reveal mb-12">
-              <button onClick={() => navigateTo('register')} className="bg-emerald-500 text-[#1a2e2e] px-12 py-5 rounded-2xl font-black text-xl hover:bg-emerald-400 flex items-center justify-center gap-3 active:scale-95 transition-all">
+              <button onClick={() => navigateTo('register')} className="bg-emerald-500 text-[#1a2e2e] px-12 py-5 rounded-2xl font-black text-xl hover:bg-emerald-400 flex items-center justify-center gap-3 active:scale-95 transition-all shadow-xl shadow-emerald-500/30">
                 {t.hero.cta} <ArrowRight size={24} />
               </button>
               <div className="bg-white/5 border-2 border-white/10 text-white px-12 py-5 rounded-2xl font-black text-xl flex items-center justify-center gap-2">
@@ -471,6 +495,7 @@ const App: React.FC = () => {
         </div>
       </section>
 
+      {/* Benefits Section */}
       <section className="py-24 bg-white">
         <div className="container mx-auto px-4">
           <div className="text-center max-w-3xl mx-auto mb-16 reveal">
@@ -489,6 +514,50 @@ const App: React.FC = () => {
         </div>
       </section>
 
+      {/* Levy Automation Section - RESTORED */}
+      <section className="py-24 bg-slate-900 text-white relative overflow-hidden">
+        <div className="container mx-auto px-4 relative z-10">
+          <div className="flex flex-col lg:flex-row items-center gap-20">
+            <div className="lg:w-1/2 reveal">
+              <h2 className="text-4xl md:text-5xl font-black mb-8 leading-tight">{t.levy.title}</h2>
+              <p className="text-xl text-slate-400 mb-12 font-medium">{t.levy.sub}</p>
+              <div className="space-y-8">
+                {t.levy.items.map((item, idx) => (
+                  <div key={idx} className="flex gap-6 items-start">
+                    <div className="w-12 h-12 bg-emerald-500/10 rounded-xl flex items-center justify-center text-emerald-400 flex-shrink-0">
+                      {item.icon}
+                    </div>
+                    <div>
+                      <h4 className="text-xl font-black text-white mb-2">{item.title}</h4>
+                      <p className="text-slate-400 font-medium">{item.desc}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+            <div className="lg:w-1/2 reveal">
+              <div className="bg-emerald-500/10 p-12 rounded-[4rem] border border-emerald-500/20 backdrop-blur-xl">
+                 <div className="text-emerald-400 text-6xl font-black mb-4">₦10-50</div>
+                 <p className="text-emerald-100/60 font-black uppercase tracking-[0.2em] text-sm">Processing Fee</p>
+                 <div className="h-px bg-white/10 my-10"></div>
+                 <p className="text-lg text-emerald-100/40 leading-relaxed italic">
+                   "Automating our daily stall fees has reduced leakages by 40% and improved our association's budget for market cleaning."
+                 </p>
+                 <div className="mt-8 flex items-center gap-4">
+                   <div className="w-12 h-12 bg-white/10 rounded-full"></div>
+                   <div>
+                     <div className="font-black text-white">Chief Okafor</div>
+                     <div className="text-xs text-emerald-400 font-bold">Market Association Chairman</div>
+                   </div>
+                 </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className="absolute top-0 right-0 w-96 h-96 bg-emerald-500/10 blur-[120px] rounded-full -translate-y-1/2 translate-x-1/2"></div>
+      </section>
+
+      {/* Trust & Simulator Section */}
       <section className="py-24 bg-gray-50 border-y border-slate-100 overflow-hidden">
         <div className="container mx-auto px-4 flex flex-col lg:flex-row items-center gap-20">
           <div className="lg:w-1/2 reveal">
@@ -504,8 +573,57 @@ const App: React.FC = () => {
                  </li>
                ))}
             </ul>
+            <button onClick={() => navigateTo('how-it-works')} className="inline-flex items-center gap-2 text-emerald-600 font-black group">
+              Learn the full process <ArrowRight size={18} className="group-hover:translate-x-2 transition-transform" />
+            </button>
           </div>
           <div className="lg:w-1/2 w-full max-w-lg mx-auto reveal"><USSDSimulator /></div>
+        </div>
+      </section>
+
+      {/* Agent Network Section - RESTORED */}
+      <section className="py-24 bg-white overflow-hidden">
+        <div className="container mx-auto px-4">
+          <div className="flex flex-col lg:flex-row items-center gap-20">
+            <div className="lg:w-1/2 order-2 lg:order-1 reveal">
+              <div className="grid grid-cols-2 gap-4">
+                <img src="https://images.unsplash.com/photo-1579621970563-ebec7560ff3e?auto=format&fit=crop&q=80&w=400" className="rounded-3xl shadow-xl rotate-[-2deg]" alt="POS Agent" />
+                <img src="https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&q=80&w=400" className="rounded-3xl shadow-xl rotate-[2deg] translate-y-12" alt="Market POS" />
+              </div>
+            </div>
+            <div className="lg:w-1/2 order-1 lg:order-2 reveal">
+              <h2 className="text-4xl md:text-5xl font-black text-slate-900 mb-8 leading-tight">{t.agent.title}</h2>
+              <p className="text-xl text-emerald-600 font-black mb-6 uppercase tracking-widest text-sm">{t.agent.sub}</p>
+              <p className="text-xl text-slate-500 mb-10 font-medium leading-relaxed">{t.agent.desc}</p>
+              <div className="flex items-center gap-8 grayscale opacity-50">
+                <span className="font-black text-slate-400 text-2xl tracking-tighter uppercase">Moniepoint</span>
+                <span className="font-black text-slate-400 text-2xl tracking-tighter uppercase">OPay</span>
+                <span className="font-black text-slate-400 text-2xl tracking-tighter uppercase">PalmPay</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Stories Section - RESTORED */}
+      <section className="py-24 bg-emerald-50">
+        <div className="container mx-auto px-4 text-center">
+           <h2 className="text-4xl md:text-5xl font-black text-slate-900 mb-6">{t.stories.title}</h2>
+           <p className="text-xl text-slate-500 font-medium mb-20">{t.stories.sub}</p>
+           <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+             {t.stories.items.map((item, idx) => (
+               <div key={idx} className="bg-white p-10 rounded-[3rem] text-left border border-slate-100 shadow-sm reveal">
+                 <div className="flex items-center gap-4 mb-6">
+                   <div className="w-12 h-12 bg-emerald-500 rounded-2xl"></div>
+                   <div>
+                     <div className="font-black text-slate-900">{item.name}</div>
+                     <div className="text-xs text-emerald-600 font-bold uppercase">{item.role}</div>
+                   </div>
+                 </div>
+                 <p className="text-slate-600 font-medium italic leading-relaxed">"{item.text}"</p>
+               </div>
+             ))}
+           </div>
         </div>
       </section>
     </main>
@@ -545,12 +663,67 @@ const App: React.FC = () => {
     </div>
   );
 
+  const FeaturesView = () => (
+    <div className="bg-gray-50 min-h-screen animate-in slide-in-from-right duration-500">
+      <SubPageHero 
+        title="Comprehensive" 
+        highlight="Business Tools" 
+        description="Daily Collect isn't just a wallet; it's a complete operating system for the informal economy." 
+      />
+      <div className="container mx-auto px-4 py-24">
+        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {[
+            { 
+              icon: <Smartphone className="text-blue-500" />, 
+              title: "Unified USSD Gateway", 
+              desc: "Dial *555# on any network (MTN, Glo, Airtel, 9mobile). Register, check balance, and pay levies in seconds without needing a smartphone." 
+            },
+            { 
+              icon: <QrCode className="text-emerald-500" />, 
+              title: "Smart Merchant IDs", 
+              desc: "Every trader receives a unique Wallet Reference (WR) code. Display it at your stall for customers to pay via QR or bank transfer." 
+            },
+            { 
+              icon: <Coins className="text-amber-500" />, 
+              title: "Hybrid Revenue Tracking", 
+              desc: "Digital payments are logged automatically. Log your daily physical cash sales via USSD to get a 100% view of your business health." 
+            },
+            { 
+              icon: <ShieldCheck className="text-purple-500" />, 
+              title: "Association Dues Automation", 
+              desc: "Set and forget. Auto-remit your weekly market association dues and stall fees directly from your digital balance." 
+            },
+            { 
+              icon: <PieChart className="text-rose-500" />, 
+              title: "Digital Credit Scoring", 
+              desc: "Your consistent transaction history builds a digital profile. We partner with banks to offer micro-loans based on your real performance." 
+            },
+            { 
+              icon: <Building2 className="text-cyan-500" />, 
+              title: "Government Tax Portal", 
+              desc: "Pay your state income taxes (KIRS, LIRS, etc.) through our verified government links. Get instant SMS proof of payment." 
+            }
+          ].map((item, i) => (
+            <div key={i} className="bg-white p-10 rounded-[2.5rem] shadow-sm border border-slate-100 hover:shadow-xl transition-all reveal group">
+              <div className="w-16 h-16 bg-slate-50 rounded-2xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                {item.icon}
+              </div>
+              <h3 className="text-2xl font-black text-slate-900 mb-4">{item.title}</h3>
+              <p className="text-slate-600 font-medium leading-relaxed">{item.desc}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+
   return (
     <div className="min-h-screen bg-white">
       <Header />
       {currentView === 'home' && <HomeView />}
-      {currentView === 'features' && <div className="bg-gray-50 min-h-screen"><SubPageHero title="Production" highlight="Ready" description="Bridge to credit and compliance." /></div>}
+      {currentView === 'features' && <FeaturesView />}
       {currentView === 'about' && <AboutView />}
+      {currentView === 'how-it-works' && <div className="bg-gray-50 min-h-screen"><SubPageHero title="Seamless" highlight="Process" description="Registration to growth in four easy steps." /></div>}
       {currentView === 'login' && <Auth mode="login" onAuthSuccess={handleAuthSuccess} onToggleMode={() => navigateTo('register')} />}
       {currentView === 'register' && <Auth mode="register" onAuthSuccess={handleAuthSuccess} onToggleMode={() => navigateTo('login')} />}
       {currentView === 'advisor' && <div className="pt-24"><BusinessAdvisor /></div>}
@@ -574,7 +747,7 @@ const App: React.FC = () => {
               <div key={idx}>
                 <h5 className="text-xs font-black uppercase tracking-widest text-emerald-500 mb-10">{title}</h5>
                 <ul className="space-y-4 text-emerald-100/40 font-bold">
-                  {title === 'Services' && ['USSD *555#', 'Aggregator', 'Levy Pay'].map(l => <li key={l}>{l}</li>)}
+                  {title === 'Services' && ['USSD *555#', 'Aggregator', 'Levy Pay'].map(l => <li key={l} className="cursor-pointer hover:text-white" onClick={() => navigateTo('features')}>{l}</li>)}
                   {title === 'Company' && ['About Us', 'Success Stories'].map(l => <li key={l} className="cursor-pointer hover:text-white" onClick={() => navigateTo(l === 'About Us' ? 'about' : 'home')}>{l}</li>)}
                   {title === 'Legal' && ['Privacy', 'Compliance'].map(l => <li key={l}>{l}</li>)}
                 </ul>
