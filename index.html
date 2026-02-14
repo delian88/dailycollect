@@ -3,7 +3,57 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Daily Collect Wallet - Empowering Nigeria's Informal Sector</title>
+    
+    <!-- Primary Meta Tags -->
+    <title>Daily Collect Wallet | USSD Digital Revenue for Nigeria's Informal Sector</title>
+    <meta name="title" content="Daily Collect Wallet | USSD Digital Revenue for Nigeria's Informal Sector">
+    <meta name="description" content="Securely collect, track, and remit revenue via *555#. Built for Nigeria's market traders in Kano, Lagos, and Abuja. No internet required. Partnered with OPay & Moniepoint.">
+    <meta name="keywords" content="Daily Collect, USSD Banking Nigeria, Informal Sector Finance, Kano Market Revenue, Lagos Market Levy, Moniepoint Partner, OPay Aggregator, *555# Nigeria">
+    <meta name="author" content="Daily Collect Wallet">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://daily-collect.vercel.app/">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://daily-collect.vercel.app/">
+    <meta property="og:title" content="Daily Collect Wallet | Empowering Nigeria's Hustle">
+    <meta property="og:description" content="Digital revenue collection for street vendors and artisans via USSD *555#. Join over 1M traders digitizing their business.">
+    <meta property="og:image" content="https://daily-collect.vercel.app/og-image.jpg">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://daily-collect.vercel.app/">
+    <meta property="twitter:title" content="Daily Collect Wallet | *555# Digital Revenue">
+    <meta property="twitter:description" content="Secure revenue tracking and levy remittance for Nigeria's informal sector. No data needed.">
+    <meta property="twitter:image" content="https://daily-collect.vercel.app/og-image.jpg">
+
+    <!-- Structured Data (JSON-LD) -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "FinancialService",
+      "name": "Daily Collect Wallet",
+      "alternateName": "Daily Collect",
+      "description": "A USSD-based digital revenue collection system for Nigeria's informal sector traders.",
+      "url": "https://daily-collect.vercel.app/",
+      "logo": "https://daily-collect.vercel.app/logo.png",
+      "areaServed": {
+        "@type": "Country",
+        "name": "Nigeria"
+      },
+      "serviceType": "Digital Revenue Collection",
+      "provider": {
+        "@type": "Organization",
+        "name": "Daily Collect Partners"
+      },
+      "offers": {
+        "@type": "Offer",
+        "priceCurrency": "NGN",
+        "price": "0"
+      }
+    }
+    </script>
+
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <style>
@@ -19,7 +69,6 @@
             background-color: #f9fafb;
         }
 
-        /* Shining Text Effect */
         .shining-text {
             background: linear-gradient(
                 to right,
@@ -38,12 +87,9 @@
         }
 
         @keyframes shine {
-            to {
-                background-position: 200% center;
-            }
+            to { background-position: 200% center; }
         }
 
-        /* Stars Background Animation */
         .stars-container {
             position: absolute;
             inset: 0;
@@ -65,7 +111,6 @@
             50% { opacity: 0.8; transform: scale(1.1); }
         }
 
-        /* Reveal Animations */
         .reveal {
             opacity: 0;
             transform: translateY(30px);
@@ -76,22 +121,13 @@
             transform: translateY(0);
         }
 
-        /* Custom Scrollbar */
-        ::-webkit-scrollbar {
-            width: 8px;
-        }
-        ::-webkit-scrollbar-track {
-            background: #f1f1f1;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: var(--emerald-600);
-            border-radius: 10px;
-        }
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #f1f1f1; }
+        ::-webkit-scrollbar-thumb { background: var(--emerald-600); border-radius: 10px; }
 
-        /* Responsive fixes for simulator */
         @media (max-width: 640px) {
             .simulator-wrapper {
-                transform: scale(0.9);
+                transform: scale(0.85);
                 transform-origin: top center;
             }
         }
@@ -113,7 +149,6 @@
 </head>
 <body class="selection:bg-emerald-500 selection:text-white">
     <div id="root"></div>
-    <!-- The entry point for the React application -->
     <script type="module" src="./index.tsx"></script>
 </body>
 </html>

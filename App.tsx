@@ -19,7 +19,12 @@ import {
   ShieldCheck,
   Languages,
   MapPin,
-  ShieldAlert
+  ShieldAlert,
+  MessageCircle,
+  Award,
+  ChevronDown,
+  ChevronUp,
+  Briefcase
 } from 'lucide-react';
 import USSDSimulator from './components/USSDSimulator';
 import BusinessAdvisor from './components/BusinessAdvisor';
@@ -33,6 +38,7 @@ const App: React.FC = () => {
   const [logoError, setLogoError] = useState(false);
   const [currentView, setCurrentView] = useState<View>('home');
   const [currentLang, setCurrentLang] = useState<Language>('English');
+  const [activeFaq, setActiveFaq] = useState<number | null>(null);
 
   useEffect(() => {
     const timer = setTimeout(() => setIsLoading(false), 2500);
@@ -90,7 +96,7 @@ const App: React.FC = () => {
       {!logoError ? (
         <img 
           src="logo.png" 
-          alt="Daily Collect" 
+          alt="Daily Collect Logo" 
           className="w-full h-full object-cover transition-transform group-hover:scale-110"
           onError={() => setLogoError(true)}
         />
@@ -163,8 +169,8 @@ const App: React.FC = () => {
   }
 
   const Header = () => (
-    <nav className="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-md border-b border-slate-100 transition-all">
-      <div className="container mx-auto px-4 h-20 flex items-center justify-between">
+    <header className="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-md border-b border-slate-100 transition-all">
+      <nav className="container mx-auto px-4 h-20 flex items-center justify-between">
         <button onClick={() => navigateTo('home')} className="flex items-center gap-3">
           <LogoComponent className="w-10 h-10" />
           <div className="flex flex-col text-left">
@@ -202,7 +208,7 @@ const App: React.FC = () => {
               <option value="Igbo">IGB</option>
             </select>
           </div>
-          <button onClick={() => navigateTo('home')} className="bg-[#1a2e2e] text-white px-7 py-3 rounded-full font-black text-sm hover:bg-emerald-700 shadow-xl shadow-emerald-100 transition-all">
+          <button onClick={() => navigateTo('how-it-works')} className="bg-[#1a2e2e] text-white px-7 py-3 rounded-full font-black text-sm hover:bg-emerald-700 shadow-xl shadow-emerald-100 transition-all">
             {translations[currentLang].cta}
           </button>
         </div>
@@ -213,24 +219,10 @@ const App: React.FC = () => {
         >
           {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
         </button>
-      </div>
+      </nav>
 
       {isMenuOpen && (
         <div className="lg:hidden absolute top-20 left-0 right-0 bg-white border-b border-slate-100 p-6 flex flex-col gap-6 shadow-2xl">
-           <div className="flex justify-between items-center pb-4 border-b border-slate-50">
-             <span className="text-xs font-black uppercase text-slate-400 tracking-widest">Select Language</span>
-             <div className="flex gap-4">
-                {['English', 'Hausa', 'Yoruba', 'Igbo'].map(lang => (
-                  <button 
-                    key={lang}
-                    onClick={() => setCurrentLang(lang as Language)}
-                    className={`text-xs font-bold ${currentLang === lang ? 'text-emerald-600' : 'text-slate-400'}`}
-                  >
-                    {lang.slice(0,3).toUpperCase()}
-                  </button>
-                ))}
-             </div>
-           </div>
           {[
             { id: 'features', label: 'Features' },
             { id: 'how-it-works', label: 'How it Works' },
@@ -250,11 +242,12 @@ const App: React.FC = () => {
           </button>
         </div>
       )}
-    </nav>
+    </header>
   );
 
   const HomeView = () => (
-    <div className="animate-in fade-in duration-700">
+    <main className="animate-in fade-in duration-700">
+      {/* Hero Section */}
       <section className="relative pt-32 lg:pt-52 pb-24 lg:pb-40 bg-[#1a2e2e] overflow-hidden">
         <div className="stars-container">{renderStars(70)}</div>
         <div className="container mx-auto px-4 relative z-10">
@@ -262,7 +255,7 @@ const App: React.FC = () => {
             <div className="lg:w-1/2 text-center lg:text-left">
               <div className="inline-flex items-center gap-2 px-4 py-2 bg-emerald-500/10 text-emerald-400 rounded-full text-xs font-black uppercase tracking-widest mb-8 border border-emerald-500/20 reveal">
                 <StarIcon size={14} className="fill-emerald-400 animate-pulse" />
-                <span>Modern Banking for {currentLang === 'English' ? 'Markets' : translations[currentLang].dialect}</span>
+                <span>Digitizing {currentLang === 'English' ? 'Nigeria' : translations[currentLang].dialect}'s Informal Sector</span>
               </div>
               <h1 className="text-5xl md:text-7xl lg:text-8xl font-black text-white mb-8 leading-[0.95] tracking-tighter reveal">
                 {translations[currentLang].heroTitle.split('.').map((part, i) => (
@@ -272,15 +265,15 @@ const App: React.FC = () => {
                 ))}
               </h1>
               <p className="text-xl text-emerald-100/60 mb-10 max-w-2xl mx-auto lg:mx-0 leading-relaxed font-medium reveal">
-                {translations[currentLang].heroSub}
+                {translations[currentLang].heroSub} Secure, cashless payments via *555#. Built for street vendors, market traders, and artisans.
               </p>
               <div className="flex flex-col sm:flex-row gap-5 justify-center lg:justify-start reveal">
                 <button onClick={() => navigateTo('how-it-works')} className="bg-emerald-500 text-[#1a2e2e] px-12 py-5 rounded-2xl font-black text-xl hover:bg-emerald-400 transition-all flex items-center justify-center gap-3 shadow-2xl shadow-emerald-500/30 active:scale-95">
-                  Start Collection <ArrowRight size={24} />
+                  Start Registration <ArrowRight size={24} />
                 </button>
-                <button className="bg-white/5 border-2 border-white/10 text-white px-12 py-5 rounded-2xl font-black text-xl hover:bg-white/10 transition-all active:scale-95">
-                  Dial *555#
-                </button>
+                <div className="bg-white/5 border-2 border-white/10 text-white px-12 py-5 rounded-2xl font-black text-xl flex items-center justify-center gap-2">
+                   Dial <span className="text-emerald-400">*555#</span>
+                </div>
               </div>
             </div>
             <div className="lg:w-1/2 w-full max-w-lg mx-auto reveal relative">
@@ -293,62 +286,150 @@ const App: React.FC = () => {
         </div>
       </section>
 
-      {/* Trust & Impact Stats */}
-      <section className="py-20 bg-gray-50 border-y border-slate-100">
-        <div className="container mx-auto px-4">
-           <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
-              {[
-                { label: "Target Potential", val: "30M+", sub: "Informal Traders" },
-                { label: "Theft Reduction", val: "50%", sub: "Cash Safety" },
-                { label: "Partner Speed", val: "48h", sub: "Loan Approvals" },
-                { label: "Digital Growth", val: "25%", sub: "Monthly Increase" }
-              ].map((stat, i) => (
-                <div key={i} className="text-center reveal">
-                   <div className="text-4xl font-black text-slate-900 mb-1">{stat.val}</div>
-                   <div className="text-xs font-bold text-emerald-600 uppercase tracking-widest mb-1">{stat.label}</div>
-                   <div className="text-[10px] font-medium text-slate-400 uppercase">{stat.sub}</div>
-                </div>
-              ))}
-           </div>
-        </div>
+      {/* Partner Trust Section */}
+      <section className="py-12 bg-gray-50 border-y border-slate-100">
+         <div className="container mx-auto px-4">
+            <p className="text-center text-[10px] font-black uppercase tracking-[0.4em] text-slate-400 mb-8">POWERED BY LICENSED NIGERIAN PARTNERS</p>
+            <div className="flex flex-wrap justify-center items-center gap-10 md:gap-20 grayscale opacity-60">
+               <div className="flex items-center gap-2 font-black text-2xl text-slate-900">
+                  <div className="w-8 h-8 bg-blue-600 rounded-lg"></div> Moniepoint
+               </div>
+               <div className="flex items-center gap-2 font-black text-2xl text-slate-900">
+                  <div className="w-8 h-8 bg-emerald-500 rounded-lg"></div> OPay
+               </div>
+               <div className="flex items-center gap-2 font-black text-2xl text-slate-900">
+                  <div className="w-8 h-8 bg-yellow-400 rounded-lg"></div> MTN MoMo
+               </div>
+               <div className="flex items-center gap-2 font-black text-2xl text-slate-900">
+                  <div className="w-8 h-8 bg-red-600 rounded-lg"></div> PalmPay
+               </div>
+            </div>
+         </div>
       </section>
 
-      {/* Location Focused Section */}
-      <section className="py-24 bg-white">
+      {/* Regional Focus Section */}
+      <section className="py-24 bg-white overflow-hidden">
         <div className="container mx-auto px-4">
            <div className="flex flex-col lg:flex-row items-center gap-20">
               <div className="lg:w-1/2 reveal">
-                 <h2 className="text-4xl md:text-5xl font-black text-slate-900 mb-8 leading-tight">Serving the Heart <br /> of <span className="text-emerald-600">Nigerian Commerce.</span></h2>
-                 <p className="text-xl text-slate-500 mb-10 leading-relaxed">Whether you're in the busy Kurmi market of Kano, the fashion hubs of Lagos Balogun, or the bustling streets of Abuja, Daily Collect is your digital partner.</p>
-                 <div className="space-y-6">
-                    {['Lagos (Balogun Market)', 'Kano (Sabon Gari, Kurmi)', 'Abuja (Wuse, Garki)', 'Rivers (Oil Mill Market)'].map(loc => (
-                      <div key={loc} className="flex items-center gap-4 text-lg font-bold text-slate-700">
-                         <MapPin className="text-emerald-500" /> {loc}
-                      </div>
+                 <h2 className="text-4xl md:text-6xl font-black text-slate-900 mb-8 leading-tight">Serving the Heart <br /> of <span className="text-emerald-600">Nigerian Commerce.</span></h2>
+                 <p className="text-xl text-slate-500 mb-10 leading-relaxed font-medium">Daily Collect is designed for the reality of Nigeria's informal sector. We bridge the gap between cash-based trade and digital financial growth.</p>
+                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                    {[
+                       { city: "Lagos", market: "Balogun & Alaba", feature: "Fast QR Settlements" },
+                       { city: "Kano", market: "Sabon Gari & Kurmi", feature: "Offline USSD Access" },
+                       { city: "Abuja", market: "Wuse & Garki", feature: "Levy Compliance" },
+                       { city: "Onitsha", market: "Main Market", feature: "Bulk Collection" }
+                    ].map((item, i) => (
+                       <div key={i} className="p-6 bg-slate-50 rounded-3xl border border-slate-100 group hover:bg-emerald-600 hover:border-emerald-600 transition-all">
+                          <MapPin className="text-emerald-500 mb-4 group-hover:text-white" />
+                          <h4 className="font-black text-slate-900 group-hover:text-white text-lg">{item.city}</h4>
+                          <p className="text-slate-500 group-hover:text-emerald-100 text-sm">{item.market}</p>
+                          <div className="mt-4 text-[10px] font-black uppercase tracking-widest text-emerald-600 group-hover:text-white">{item.feature}</div>
+                       </div>
                     ))}
                  </div>
               </div>
-              <div className="lg:w-1/2 grid grid-cols-2 gap-4 reveal">
-                 <div className="bg-emerald-50 p-8 rounded-[3rem] aspect-square flex flex-col justify-end">
-                    <Building2 className="text-emerald-600 mb-4" size={40} />
-                    <h4 className="font-black text-xl">Market Stalls</h4>
+              <div className="lg:w-1/2 relative reveal">
+                 <div className="relative z-10 bg-[#1a2e2e] p-12 rounded-[4rem] text-white shadow-3xl">
+                    <Award className="text-yellow-400 mb-8" size={64} />
+                    <h3 className="text-3xl font-black mb-6 leading-tight">Driving Inclusion at Scale</h3>
+                    <div className="space-y-6">
+                       <div className="flex items-center gap-4">
+                          <div className="w-12 h-12 bg-white/10 rounded-2xl flex items-center justify-center font-black text-emerald-400">80%</div>
+                          <p className="font-medium text-emerald-100/60">Informal workforce contribution to GDP</p>
+                       </div>
+                       <div className="flex items-center gap-4">
+                          <div className="w-12 h-12 bg-white/10 rounded-2xl flex items-center justify-center font-black text-emerald-400">1M+</div>
+                          <p className="font-medium text-emerald-100/60">Targeted merchants by 2026</p>
+                       </div>
+                       <div className="flex items-center gap-4">
+                          <div className="w-12 h-12 bg-white/10 rounded-2xl flex items-center justify-center font-black text-emerald-400">0%</div>
+                          <p className="font-medium text-emerald-100/60">Monthly maintenance fees for traders</p>
+                       </div>
+                    </div>
                  </div>
-                 <div className="bg-blue-50 p-8 rounded-[3rem] aspect-square flex flex-col justify-end mt-12">
-                    <Users className="text-blue-600 mb-4" size={40} />
-                    <h4 className="font-black text-xl">Artisans</h4>
-                 </div>
+                 <div className="absolute -bottom-10 -right-10 w-64 h-64 bg-emerald-500/20 rounded-full blur-3xl"></div>
               </div>
            </div>
         </div>
       </section>
 
-      {/* Floating CTA */}
-      <div className="fixed bottom-8 right-8 z-40 lg:hidden">
-         <button onClick={() => navigateTo('advisor')} className="bg-emerald-600 text-white p-4 rounded-full shadow-2xl border-4 border-white">
-            <Languages size={24} />
-         </button>
-      </div>
-    </div>
+      {/* Testimonials / Success Stories */}
+      <section className="py-24 bg-gray-50">
+         <div className="container mx-auto px-4">
+            <div className="text-center max-w-2xl mx-auto mb-16 reveal">
+               <h2 className="text-4xl font-black text-slate-900 mb-4">Stories from the Market</h2>
+               <p className="text-slate-500 font-medium">Real impact on real traders across Nigeria.</p>
+            </div>
+            <div className="grid md:grid-cols-3 gap-8">
+               {[
+                  { name: "Oga Ibrahim", role: "Tomato Wholesaler, Kano", text: "Before Daily Collect, I struggled with counting cash at 5 PM. Now, my collections are digital, and I applied for my first Moniepoint loan via the app!" },
+                  { name: "Madam Chidimma", role: "Textiles, Onitsha", text: "I like that I can pay my market association dues (*555#) directly. No more manual receipts or losing paper records. Everything is clear." },
+                  { name: "Ayo", role: "Shoemaker, Mushin", text: "My customers just dial the code and pay. I get an SMS immediately. It has saved me from thieves who target cash in the evening." }
+               ].map((story, i) => (
+                  <div key={i} className="bg-white p-10 rounded-[3rem] border border-slate-100 shadow-sm reveal flex flex-col justify-between">
+                     <div>
+                        <MessageCircle className="text-emerald-500 mb-6" size={32} />
+                        <p className="text-slate-600 font-medium italic leading-relaxed mb-8">"{story.text}"</p>
+                     </div>
+                     <div className="flex items-center gap-4">
+                        <div className="w-12 h-12 bg-slate-100 rounded-full flex items-center justify-center font-black text-emerald-600">{story.name[0]}</div>
+                        <div>
+                           <div className="font-black text-slate-900">{story.name}</div>
+                           <div className="text-xs text-slate-400 font-bold uppercase tracking-widest">{story.role}</div>
+                        </div>
+                     </div>
+                  </div>
+               ))}
+            </div>
+         </div>
+      </section>
+
+      {/* FAQ Section */}
+      <section className="py-24 bg-white">
+         <div className="container mx-auto px-4 max-w-4xl">
+            <h2 className="text-4xl font-black text-slate-900 mb-12 text-center">Frequently Asked Questions</h2>
+            <div className="space-y-4">
+               {[
+                  { q: "Do I need internet to use Daily Collect?", a: "No. You can access all business features including registration, collections, and withdrawals via the USSD code *555# on any phone." },
+                  { q: "Is my money safe?", a: "Daily Collect is an intermediary aggregator. Your funds are held by licensed partners like OPay and Moniepoint, which are regulated by the CBN and insured by NDIC." },
+                  { q: "How much are the transaction fees?", a: "Registration is free. Digital collection fees range from 0.5% to 1%, capped at ₦500. Levy processing is a flat ₦10-₦50 fee." },
+                  { q: "How do I get my cash out?", a: "Generate a withdrawal code via *555# and visit any OPay or Moniepoint agent, or any partnered market shop to get your cash." },
+                  { q: "Can I use it in Hausa or Yoruba?", a: "Yes. Our USSD menu and App support English, Hausa, Yoruba, and Igbo to ensure every trader feels at home." }
+               ].map((faq, i) => (
+                  <div key={i} className="reveal border border-slate-100 rounded-2xl overflow-hidden shadow-sm">
+                     <button 
+                        onClick={() => setActiveFaq(activeFaq === i ? null : i)}
+                        className="w-full flex items-center justify-between p-6 text-left hover:bg-slate-50 transition-colors"
+                     >
+                        <span className="font-black text-slate-900">{faq.q}</span>
+                        {activeFaq === i ? <ChevronUp className="text-emerald-500" /> : <ChevronDown className="text-emerald-500" />}
+                     </button>
+                     {activeFaq === i && (
+                        <div className="p-6 pt-0 bg-slate-50 text-slate-600 font-medium leading-relaxed animate-in slide-in-from-top-4 duration-300">
+                           {faq.a}
+                        </div>
+                     )}
+                  </div>
+               ))}
+            </div>
+         </div>
+      </section>
+
+      {/* Final CTA */}
+      <section className="py-24 bg-[#1a2e2e] relative overflow-hidden">
+         <div className="stars-container opacity-20">{renderStars(50)}</div>
+         <div className="container mx-auto px-4 text-center relative z-10">
+            <h2 className="text-5xl md:text-7xl font-black text-white mb-8 tracking-tighter">Ready to Scale Your <br /> <span className="shining-text">Market Hustle?</span></h2>
+            <p className="text-xl text-emerald-100/60 mb-12 max-w-2xl mx-auto font-medium">Join 100,000+ traders already using Daily Collect to build a digital trail for loans and secure revenue.</p>
+            <div className="flex flex-col sm:flex-row gap-6 justify-center">
+               <button onClick={() => navigateTo('how-it-works')} className="bg-emerald-500 text-[#1a2e2e] px-12 py-5 rounded-2xl font-black text-xl hover:bg-emerald-400 transition-all shadow-2xl shadow-emerald-500/30">Get Started Today</button>
+               <button className="bg-white/5 border-2 border-white/10 text-white px-12 py-5 rounded-2xl font-black text-xl">Dial *555#</button>
+            </div>
+         </div>
+      </section>
+    </main>
   );
 
   const SubPageHero = ({ title, highlight, description }: { title: string, highlight: string, description: string }) => (
@@ -509,7 +590,7 @@ const App: React.FC = () => {
            </div>
            <div>
               <h4 className="text-2xl font-black text-amber-900 mb-2">Security & Risk Mitigation</h4>
-              <p className="text-amber-800 font-medium leading-relaxed">Daily Collect is a regulated intermediary. We use CBN-compliant encryption and partner exclusively with licensed deposit-taking institutions. Your funds are never at risk from software failure.</p>
+              <p className="text-amber-800 font-medium leading-relaxed">Daily Collect is a regulated intermediary. We use CBN-compliant encryption and partner exclusively with licensed deposit-taking institutions. Your funds are never at risk.</p>
            </div>
         </div>
       </div>
@@ -524,9 +605,11 @@ const App: React.FC = () => {
     </div>
   );
 
+  const HeaderWrap = () => <Header />;
+
   return (
     <div className="min-h-screen bg-white">
-      <Header />
+      <HeaderWrap />
       {currentView === 'features' && <FeaturesView />}
       {currentView === 'how-it-works' && <HowItWorksView />}
       {currentView === 'pricing' && <PricingView />}
@@ -547,22 +630,29 @@ const App: React.FC = () => {
                 </div>
               </div>
               <p className="text-emerald-100/40 font-medium leading-relaxed max-w-xs mb-8">
-                The intermediary platform driving financial inclusion for Nigeria's informal heartbeat.
+                Leading USSD revenue aggregator for Nigeria's informal heartbeat. From markets to banks.
               </p>
+              <div className="flex gap-4">
+                 {[Globe, Briefcase, TrendingUp].map((Icon, idx) => (
+                    <div key={idx} className="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center hover:bg-emerald-600 transition-colors cursor-pointer">
+                       <Icon size={18} className="text-emerald-400" />
+                    </div>
+                 ))}
+              </div>
             </div>
             
-            {['Services', 'Resources', 'Legal'].map((title, idx) => (
+            {['Services', 'Regional', 'Legal'].map((title, idx) => (
               <div key={idx}>
                 <h5 className="text-xs font-black uppercase tracking-[0.4em] text-emerald-500 mb-10">{title}</h5>
                 <ul className="space-y-5 text-emerald-100/40 font-bold">
-                  {title === 'Services' && ['USSD *555#', 'Revenue Aggregator', 'Levy Remittance', 'Partner Referrals'].map(l => (
-                    <li key={l}><button onClick={() => navigateTo('features')} className="hover:text-emerald-400 text-left">{l}</button></li>
+                  {title === 'Services' && ['USSD *555# Gateway', 'Revenue Aggregator', 'Levy Remittance', 'Partner Credit Referrals'].map(l => (
+                    <li key={l}><button onClick={() => navigateTo('features')} className="hover:text-emerald-400 text-left transition-colors">{l}</button></li>
                   ))}
-                  {title === 'Resources' && ['Kano Operations', 'Lagos Hubs', 'Abuja Network', 'Market Associations'].map(l => (
-                    <li key={l}><button onClick={() => navigateTo('how-it-works')} className="hover:text-emerald-400 text-left">{l}</button></li>
+                  {title === 'Regional' && ['Lagos Balogun Hub', 'Kano Sabon Gari Network', 'Abuja Central Markets', 'Port Harcourt Operations'].map(l => (
+                    <li key={l}><button onClick={() => navigateTo('home')} className="hover:text-emerald-400 text-left transition-colors">{l}</button></li>
                   ))}
-                  {title === 'Legal' && ['Privacy Policy', 'KYC Guidelines', 'Partner Terms', 'Safety Protocols'].map(l => (
-                    <li key={l}><button className="hover:text-emerald-400 text-left">{l}</button></li>
+                  {title === 'Legal' && ['Privacy Policy', 'KYC & Compliance', 'Terms of Service', 'Security Protocols'].map(l => (
+                    <li key={l}><button className="hover:text-emerald-400 text-left transition-colors">{l}</button></li>
                   ))}
                 </ul>
               </div>
@@ -571,17 +661,17 @@ const App: React.FC = () => {
 
           <div className="pt-12 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-10">
             <div className="text-emerald-100/20 text-[10px] font-black uppercase tracking-[0.3em] text-center md:text-left">
-              © 2024 DAILY COLLECT WALLET. BUILT FOR NIGERIA.
+              © 2024 DAILY COLLECT WALLET. DRIVING FINANCIAL INCLUSION ACROSS NIGERIA.
             </div>
             <div className="flex gap-10 text-[9px] font-black tracking-[0.2em] text-emerald-500/40 uppercase">
-              <span>NDIC Insured Partners</span>
-              <span>CBN Compliant Gateway</span>
-              <span>NIN Verified Merchants</span>
+               <span className="flex items-center gap-2"><ShieldCheck size={12} /> NDIC Insured</span>
+               <span className="flex items-center gap-2"><Lock size={12} /> SSL Encrypted</span>
+               <span className="flex items-center gap-2"><Building2 size={12} /> CBN Registered</span>
             </div>
           </div>
         </div>
       </footer>
-    </div>
+    </main>
   );
 };
 
