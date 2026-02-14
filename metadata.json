@@ -1,7 +1,10 @@
 {
   "name": "Daily Collect Wallet",
-  "description": "A professional digital revenue collection and USSD-based wallet system designed for Nigeria's informal sector traders, artisans, and market associations.",
+  "short_name": "DailyCollect",
+  "description": "Daily Collect Wallet is a professional USSD-based digital revenue system for Nigeria's informal sector, enabling traders in Kano, Lagos, and Abuja to track revenue and pay levies.",
   "requestFramePermissions": [
     "camera"
-  ]
+  ],
+  "theme_color": "#1a2e2e",
+  "background_color": "#f9fafb"
 }
