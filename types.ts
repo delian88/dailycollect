@@ -22,3 +22,14 @@ export interface USSDState {
   screen: 'home' | 'register' | 'balance' | 'levy' | 'withdraw';
   input: string;
 }
+
+export interface User {
+  id: string;
+  name: string;
+  phone: string;
+  businessType: string;
+  nin: string;
+  pin: string;
+  balance: number;
+  levyDue: number;
+}
