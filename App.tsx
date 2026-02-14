@@ -26,7 +26,11 @@ import {
   ChevronUp,
   Briefcase,
   ChevronLeft,
-  ChevronRight as ChevronRightIcon
+  ChevronRight as ChevronRightIcon,
+  Store,
+  CreditCard,
+  History,
+  FileText
 } from 'lucide-react';
 import USSDSimulator from './components/USSDSimulator';
 import BusinessAdvisor from './components/BusinessAdvisor';
@@ -126,12 +130,36 @@ const App: React.FC = () => {
         ussdLabel: "Dial *555#",
         badge: "Digitizing Nigeria's Market Hustle"
       },
+      benefits: {
+        title: "Why Choose Daily Collect?",
+        sub: "Financial tools built for the realities of Nigerian trade.",
+        items: [
+          { icon: <Smartphone size={32} />, title: "No Data Needed", desc: "Access everything via *555#. Works on 'small' phones without internet." },
+          { icon: <Lock size={32} />, title: "Theft Protection", desc: "Stop carrying bulk cash. Your daily sales are stored safely in a digital wallet." },
+          { icon: <TrendingUp size={32} />, title: "Credit Builder", desc: "Every transaction builds a digital trail that helps you secure loans from partners." },
+          { icon: <ShieldCheck size={32} />, title: "CBN Partners", desc: "Regulated by licensed partners including OPay, Moniepoint, and PalmPay." }
+        ]
+      },
       trust: {
         simulator: "Try the *555# Simulator",
         title: "No Internet? No Problem.",
         sub: "Daily Collect works on any phone, anywhere in Nigeria. From feature phones to smartphones, your business stays digital.",
         features: ["Works on all networks", "Fast USSD Gateway", "Instant SMS Alerts"],
         more: "See All Features"
+      },
+      levy: {
+        title: "Hassle-Free Levies",
+        sub: "Pay association dues and government taxes without leaving your stall.",
+        items: [
+          { icon: <Store size={24} />, title: "Market Association Dues", desc: "Auto-deduct or manually pay daily/weekly association fees." },
+          { icon: <Building2 size={24} />, title: "Government Taxes (KIRS/LIRS)", desc: "Directly remit to state agencies like Kano Internal Revenue Service." },
+          { icon: <FileText size={24} />, title: "Instant Receipts", desc: "Get SMS confirmation codes that serve as proof of payment." }
+        ]
+      },
+      agent: {
+        title: "Cash In, Cash Out Anywhere",
+        sub: "Withdraw your funds through our massive partner network of agents.",
+        desc: "Turn your digital earnings into physical cash instantly at any Moniepoint or OPay agent shop in the market. No need for a long bank queue."
       },
       stories: {
         title: "Stories from the Market",
@@ -151,12 +179,36 @@ const App: React.FC = () => {
         ussdLabel: "Kira *555#",
         badge: "Inganta Kasuwannin Najeriya"
       },
+      benefits: {
+        title: "Me ya sa za ku zabi Daily Collect?",
+        sub: "Kayan aikin kudi da aka gina don kasuwancin Najeriya.",
+        items: [
+          { icon: <Smartphone size={32} />, title: "Babu Bukatar Data", desc: "Sami komai ta *555#. Yana aiki akan kowace irin waya." },
+          { icon: <Lock size={32} />, title: "Kariya daga Sata", desc: "Daina yawo da kudi da yawa. Kudaden ka suna nan lafiya a digital wallet." },
+          { icon: <TrendingUp size={32} />, title: "Samun Lamuni", desc: "Dukkan kasuwancin ka yana taimaka maka wajen samun bashi daga bankuna." },
+          { icon: <ShieldCheck size={32} />, title: "Amintattun Abokan Hulda", desc: "OPay, Moniepoint, da PalmPay suna kiyaye kudaden ku." }
+        ]
+      },
       trust: {
         simulator: "Gwada *555# Simulator",
         title: "Babu Internet? Babu Matsala.",
         sub: "Daily Collect yana aiki akan kowace waya, ko'ina a Najeriya. Kasuwancin ku zai cigaba da kasancewa a matakin digital.",
         features: ["Yana aiki akan kowane network", "USSD mai sauri", "Sakon SMS nan take"],
         more: "Duba dukkan Siffofin"
+      },
+      levy: {
+        title: "Biyan Kudade Cikin Sauki",
+        sub: "Biya kudaden kungiya da harajin gwamnati ba tare da ka bar shagon ka ba.",
+        items: [
+          { icon: <Store size={24} />, title: "Kudaden Kungiyar Kasuwa", desc: "Biya kudaden kungiya na yau da kullun ko na mako-mako." },
+          { icon: <Building2 size={24} />, title: "Harajin Gwamnati", desc: "Tura haraji kai tsaye zuwa ga hukumomi kamar KIRS." },
+          { icon: <FileText size={24} />, title: "Rasit Nan Take", desc: "Sami sakon SMS a matsayin shedar biya." }
+        ]
+      },
+      agent: {
+        title: "Cire Kudi Ko'ina",
+        sub: "Cire kudaden ka ta hanyar abokan huldan mu.",
+        desc: "Canza kudaden ka na digital zuwa tsaba nan take a kowane shagon Moniepoint ko OPay a kasuwa."
       },
       stories: {
         title: "Labarai daga Kasuwa",
@@ -176,12 +228,36 @@ const App: React.FC = () => {
         ussdLabel: "Tẹ *555#",
         badge: "Sísọ Ọjà Nàìjíríà di Digital"
       },
+      benefits: {
+        title: "Èéṣe tí ẹ ó fi yan Daily Collect?",
+        sub: "Àwọn irinṣẹ́ ìṣúná tí a kọ́ fún iṣẹ́-òwò ní Nàìjíríà.",
+        items: [
+          { icon: <Smartphone size={32} />, title: "Kò sí Íńtánẹ́ẹ̀tì", desc: "Lo gbogbo rẹ̀ nípasẹ̀ *555#. Ó ń ṣiṣẹ́ lórí fónù kékeré." },
+          { icon: <Lock size={32} />, title: "Ìdáàbòbò lọ́wọ́ Olè", desc: "Dẹ́kun gbigbe owó púpọ̀ dání. Owó rẹ wà ní àpò digital." },
+          { icon: <TrendingUp size={32} />, title: "Ìdàgbàsókè Ìwìn Owó", desc: "Ìtàn ìṣòwò rẹ yóò ràn ọ́ lọ́wọ́ láti gba awin lọ́wọ́ àwọn báńkì." },
+          { icon: <ShieldCheck size={32} />, title: "Àwọn Alábàáṣiṣẹ́ CBN", desc: "OPay, Moniepoint, àti PalmPay ni wọ́n ń ṣọ́ owó rẹ." }
+        ]
+      },
       trust: {
         simulator: "Dán *555# Simulator wò",
         title: "Kò sí Íńtánẹ́ẹ̀tì? Kò sí ìṣòro.",
         sub: "Daily Collect ń ṣiṣẹ́ lórí fónù èyíkéyìí, níbikíbi ní Nàìjíríà. Iṣẹ́ rẹ yóò di digital pẹ̀lú wa.",
         features: ["Ó ń ṣiṣẹ́ lórí gbogbo nẹ́tíwọ́ọ̀kì", "USSD tó yá", "SMS lẹ́sẹ̀kẹsẹ̀"],
         more: "Wo gbogbo Àwọn Àwòrán"
+      },
+      levy: {
+        title: "Ìsanwó láìsí Ìṣòro",
+        sub: "San owó ẹgbẹ́ àti owó-orí ìjọba láì kúrò níbi iṣẹ́ rẹ.",
+        items: [
+          { icon: <Store size={24} />, title: "Owó Ẹgbẹ́ Ọjà", desc: "San owó ẹgbẹ́ rẹ ní ojoojúmọ́ tàbí lọ́sẹ̀ọ̀sẹ̀." },
+          { icon: <Building2 size={24} />, title: "Owó-Orí Ìjọba", desc: "San owó-orí rẹ ní tààràtà sí àwọn iléeṣẹ́ ìjọba." },
+          { icon: <FileText size={24} />, title: "Ìfọwọ́sowọ́pọ̀ Lẹ́sẹ̀kẹsẹ̀", desc: "Gba SMS tó jẹ́ ẹ̀rí ìsanwó rẹ lẹ́sẹ̀kẹsẹ̀." }
+        ]
+      },
+      agent: {
+        title: "Gba Owó níbikíbi",
+        sub: "Gba owó rẹ nípasẹ̀ nẹ́tíwọ́ọ̀kì àwọn aṣojú wa.",
+        desc: "Yí owó digital rẹ padà sí owó tsaba ní tààràtà ní ṣọ́ọ̀bù Moniepoint tàbí OPay èyíkéyìí."
       },
       stories: {
         title: "Àwọn Ìtàn láti Ọjà",
@@ -201,12 +277,36 @@ const App: React.FC = () => {
         ussdLabel: "Pịa *555#",
         badge: "Ịme ka Azụmaahịa Naịjirịa gaa n'ihu"
       },
+      benefits: {
+        title: "Gịnị kpatara ị ga-eji họrọ Daily Collect?",
+        sub: "Ngwá ọrụ ego e wuru maka azụmaahịa Naịjirịa.",
+        items: [
+          { icon: <Smartphone size={32} />, title: "Enweghị Bukatar Data", desc: "Nweta ihe niile site na *555#. Ọ na-arụ ọrụ na obere ekwentị." },
+          { icon: <Lock size={32} />, title: "Nchedo pụọ n'Aka n'Aka", desc: "Kwụsị ibu ego n'aka. Ego gị dị mma na akpa digital." },
+          { icon: <TrendingUp size={32} />, title: "Inweta mbinye ego", desc: "Akụkọ azụmaahịa gị ga-enyere gị aka inweta mbinye ego n'aka ụlọ akụ." },
+          { icon: <ShieldCheck size={32} />, title: "Ndị mmekọ CBN", desc: "OPay, Moniepoint, na PalmPay na-echekwa ego gị." }
+        ]
+      },
       trust: {
         simulator: "Nwaa *555# Simulator",
         title: "Enweghị Interneti? Enweghị nsogbu.",
         sub: "Daily Collect na-arụ ọrụ na ekwentị ọ bụla, ebe ọ bụla na Naịjirịa. Azụmaahịa gị ga-adị mma.",
         features: ["Ọ na-arụ ọrụ na netwọk niile", "USSD dị ngwa", "Sakon SMS ozugbo"],
         more: "Hụ Atụmatụ niile"
+      },
+      levy: {
+        title: "Ịkwụ Ụgwọ n'Enweghị Nsogbu",
+        sub: "Kwụọ ụgwọ otu na ụtụ isi gọọmentị n'ebughị ụzọ pụọ n'ụlọ ahịa gị.",
+        items: [
+          { icon: <Store size={24} />, title: "Ụgwọ Otu Ahịa", desc: "Kwụọ ụgwọ otu gị kwa ụbọchị ma ọ bụ kwa izu." },
+          { icon: <Building2 size={24} />, title: "Utu Isi Gọọmentị", desc: "Zipụ ụtụ isi gị ozugbo na gọọmentị." },
+          { icon: <FileText size={24} />, title: "Nkwenye ozugbo", desc: "Nweta SMS nkwenye ozugbo dị ka ihe akaebe." }
+        ]
+      },
+      agent: {
+        title: "Wepụ Ego ebe ọ bụla",
+        sub: "Wepụ ego gị site na ndị nnọchi anya anyị.",
+        desc: "Gbanwee ego digital gị ka ọ bụrụ ego n'aka ozugbo na ụlọ ahịa Moniepoint ma ọ bụ OPay ọ bụla."
       },
       stories: {
         title: "Akụkọ si n'Ahịa",
@@ -395,6 +495,7 @@ const App: React.FC = () => {
 
   const HomeView = () => (
     <main className="animate-in fade-in duration-700">
+      {/* Hero Section */}
       <section className="relative pt-32 lg:pt-48 pb-24 lg:pb-32 bg-[#1a2e2e] overflow-hidden">
         <div className="stars-container">{renderStars(70)}</div>
         <div className="container mx-auto px-4 relative z-10">
@@ -434,11 +535,30 @@ const App: React.FC = () => {
         </div>
       </section>
 
+      {/* Benefits Grid Section */}
+      <section className="py-24 bg-white">
+        <div className="container mx-auto px-4">
+          <div className="text-center max-w-3xl mx-auto mb-16 reveal">
+            <h2 className="text-4xl md:text-5xl font-black text-slate-900 mb-6">{t.benefits.title}</h2>
+            <p className="text-xl text-slate-500 font-medium">{t.benefits.sub}</p>
+          </div>
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+            {t.benefits.items.map((item, idx) => (
+              <div key={idx} className="p-10 bg-slate-50 rounded-[3rem] border border-slate-100 reveal hover:bg-emerald-50 hover:border-emerald-100 transition-all group">
+                <div className="text-emerald-600 mb-6 group-hover:scale-110 transition-transform">{item.icon}</div>
+                <h3 className="text-xl font-black text-slate-900 mb-4">{item.title}</h3>
+                <p className="text-slate-600 font-medium leading-relaxed">{item.desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* Trust & Simulation Section */}
-      <section className="py-24 bg-gray-50 border-y border-slate-100">
+      <section className="py-24 bg-gray-50 border-y border-slate-100 overflow-hidden">
         <div className="container mx-auto px-4">
            <div className="flex flex-col lg:flex-row items-center gap-20">
-              <div className="lg:w-1/2">
+              <div className="lg:w-1/2 reveal">
                 <div className="inline-flex items-center gap-2 text-emerald-600 font-black uppercase tracking-widest text-xs mb-4">
                   <Smartphone size={16} /> <span>{t.trust.simulator}</span>
                 </div>
@@ -459,8 +579,68 @@ const App: React.FC = () => {
                   {t.trust.more} <ArrowRight className="group-hover:translate-x-2 transition-transform" />
                 </button>
               </div>
-              <div className="lg:w-1/2 w-full max-w-lg mx-auto">
+              <div className="lg:w-1/2 w-full max-w-lg mx-auto reveal">
                  <USSDSimulator />
+              </div>
+           </div>
+        </div>
+      </section>
+
+      {/* Levy & Tax Section */}
+      <section className="py-24 bg-white">
+        <div className="container mx-auto px-4">
+           <div className="flex flex-col lg:flex-row items-center gap-16">
+              <div className="lg:w-1/2 order-2 lg:order-1 reveal">
+                 <div className="grid gap-6">
+                    {t.levy.items.map((item, idx) => (
+                      <div key={idx} className="flex gap-6 p-8 bg-slate-50 rounded-[2rem] border border-slate-100 hover:shadow-xl transition-shadow">
+                        <div className="w-12 h-12 bg-emerald-600 text-white rounded-xl flex items-center justify-center flex-shrink-0">
+                          {item.icon}
+                        </div>
+                        <div>
+                          <h4 className="font-black text-slate-900 text-lg mb-2">{item.title}</h4>
+                          <p className="text-slate-600 font-medium text-sm leading-relaxed">{item.desc}</p>
+                        </div>
+                      </div>
+                    ))}
+                 </div>
+              </div>
+              <div className="lg:w-1/2 order-1 lg:order-2 reveal">
+                <h2 className="text-4xl md:text-5xl font-black text-slate-900 mb-8 leading-tight">{t.levy.title}</h2>
+                <p className="text-xl text-slate-500 mb-10 font-medium leading-relaxed">{t.levy.sub} We partner with state internal revenue services to make tax compliance a click away.</p>
+                <div className="flex items-center gap-8 grayscale opacity-50">
+                  <div className="text-xs font-black uppercase tracking-widest">In Partnership With</div>
+                  <div className="font-black text-lg text-slate-900">KIRS</div>
+                  <div className="font-black text-lg text-slate-900">LIRS</div>
+                </div>
+              </div>
+           </div>
+        </div>
+      </section>
+
+      {/* Agent Network Section */}
+      <section className="py-24 bg-[#1a2e2e] relative overflow-hidden">
+        <div className="stars-container opacity-20">{renderStars(50)}</div>
+        <div className="container mx-auto px-4 relative z-10">
+           <div className="max-w-4xl mx-auto text-center">
+              <div className="inline-flex items-center gap-2 px-4 py-2 bg-emerald-500/10 text-emerald-400 rounded-full text-xs font-black uppercase tracking-widest mb-8 border border-emerald-500/20 reveal">
+                <Store size={14} /> <span>{t.agent.title}</span>
+              </div>
+              <h2 className="text-4xl md:text-6xl font-black text-white mb-8 leading-tight reveal">{t.agent.sub}</h2>
+              <p className="text-xl text-emerald-100/60 mb-12 leading-relaxed font-medium reveal">
+                {t.agent.desc}
+              </p>
+              <div className="grid sm:grid-cols-2 gap-8 reveal">
+                <div className="p-8 bg-white/5 rounded-3xl border border-white/10 text-left">
+                  <CreditCard className="text-emerald-500 mb-6" size={40} />
+                  <h4 className="text-white font-black text-xl mb-4">Any Partner Agent</h4>
+                  <p className="text-emerald-100/40 text-sm font-medium">Use any OPay or Moniepoint POS agent point located within your market. Just generate a code on *555#.</p>
+                </div>
+                <div className="p-8 bg-white/5 rounded-3xl border border-white/10 text-left">
+                  <History className="text-emerald-500 mb-6" size={40} />
+                  <h4 className="text-white font-black text-xl mb-4">No Paperwork</h4>
+                  <p className="text-emerald-100/40 text-sm font-medium">Withdrawals are handled via USSD PIN. No ID card or bank teller required for market-side cash outs.</p>
+                </div>
               </div>
            </div>
         </div>
@@ -479,7 +659,7 @@ const App: React.FC = () => {
                   { name: "Madam Chidimma", role: "Textiles, Onitsha", text: "I like that I can pay my market association dues (*555#) directly. No more manual receipts or losing paper records. Everything is clear." },
                   { name: "Ayo", role: "Shoemaker, Mushin", text: "My customers just dial the code and pay. I get an SMS immediately. It has saved me from thieves who target cash in the evening." }
                ].map((story, i) => (
-                  <div key={i} className="bg-slate-50 p-10 rounded-[3rem] border border-slate-100 shadow-sm reveal flex flex-col justify-between">
+                  <div key={i} className="bg-slate-50 p-10 rounded-[3rem] border border-slate-100 shadow-sm reveal flex flex-col justify-between hover:border-emerald-200 transition-colors">
                      <div>
                         <MessageCircle className="text-emerald-500 mb-6" size={32} />
                         <p className="text-slate-600 font-medium italic leading-relaxed mb-8">"{story.text}"</p>
