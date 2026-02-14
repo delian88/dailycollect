@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { 
   Users, 
   Zap, 
@@ -24,7 +24,9 @@ import {
   Award,
   ChevronDown,
   ChevronUp,
-  Briefcase
+  Briefcase,
+  ChevronLeft,
+  ChevronRight as ChevronRightIcon
 } from 'lucide-react';
 import USSDSimulator from './components/USSDSimulator';
 import BusinessAdvisor from './components/BusinessAdvisor';
@@ -141,121 +143,188 @@ const App: React.FC = () => {
     }
   };
 
-  if (isLoading) {
-    return (
-      <div className="fixed inset-0 bg-[#1a2e2e] z-[100] flex flex-col items-center justify-center overflow-hidden">
-        <div className="stars-container">{renderStars(60)}</div>
-        <div className="relative mb-8 animate-bounce">
-           <div className="p-4 bg-white/5 backdrop-blur-xl rounded-[2.5rem] border border-white/10 shadow-2xl">
-              <LogoComponent className="w-24 h-24 md:w-32 md:h-32" />
-           </div>
-           <div className="absolute -top-4 -right-4 bg-emerald-500 rounded-full p-2 border-4 border-[#1a2e2e]">
-              <TrendingUp size={24} className="text-[#1a2e2e]" />
-           </div>
-        </div>
-        <div className="text-center px-4">
-          <h2 className="text-white text-3xl md:text-4xl font-black tracking-tighter shining-text mb-2">DAILY COLLECT</h2>
-          <p className="text-emerald-400/60 font-bold tracking-widest text-[10px] uppercase">Empowering Nigeria's Hustle</p>
-          <div className="w-48 h-1.5 bg-white/10 rounded-full mx-auto mt-10 overflow-hidden relative">
-            <div className="absolute inset-y-0 left-0 bg-emerald-500 loading-bar-animate"></div>
-          </div>
-        </div>
-        <style>{`
-          .loading-bar-animate { width: 30%; animation: moveLoadingBar 1.5s infinite ease-in-out; }
-          @keyframes moveLoadingBar { 0% { left: -30%; } 100% { left: 100%; } }
-        `}</style>
-      </div>
-    );
-  }
-
   const Header = () => (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur-md border-b border-slate-100 transition-all">
-      <nav className="container mx-auto px-4 h-20 flex items-center justify-between">
-        <button onClick={() => navigateTo('home')} className="flex items-center gap-3">
-          <LogoComponent className="w-10 h-10" />
-          <div className="flex flex-col text-left">
-            <span className="text-lg font-black text-slate-900 leading-none tracking-tight">Daily Collect</span>
-            <span className="text-[10px] font-bold text-emerald-600 tracking-widest uppercase">Wallet</span>
+    <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isMenuOpen ? 'bg-[#1a2e2e]' : 'bg-[#1a2e2e]/80 backdrop-blur-lg border-b border-white/5'}`}>
+      <div className="container mx-auto px-4">
+        <div className="flex items-center justify-between h-20">
+          <div 
+            onClick={() => navigateTo('home')} 
+            className="flex items-center gap-3 group cursor-pointer"
+          >
+            <LogoComponent />
+            <div className="flex flex-col">
+              <span className="text-xl font-black text-white tracking-tight leading-none">Daily Collect</span>
+              <span className="text-[10px] font-bold text-emerald-400 uppercase tracking-widest">Wallet</span>
+            </div>
           </div>
-        </button>
 
-        <div className="hidden lg:flex items-center gap-8">
-          {[
-            { id: 'features', label: 'Features' },
-            { id: 'how-it-works', label: 'How it Works' },
-            { id: 'pricing', label: 'Pricing' },
-            { id: 'advisor', label: 'Advisor' }
-          ].map((item) => (
-            <button 
-              key={item.id} 
-              onClick={() => navigateTo(item.id as View)}
-              className={`text-sm font-bold transition-colors ${currentView === item.id ? 'text-emerald-600' : 'text-slate-600 hover:text-emerald-600'}`}
-            >
-              {item.label}
+          <nav className="hidden lg:flex items-center gap-8">
+            <button onClick={() => navigateTo('features')} className={`text-sm font-bold uppercase tracking-widest transition-colors ${currentView === 'features' ? 'text-emerald-400' : 'text-white/60 hover:text-white'}`}>Features</button>
+            <button onClick={() => navigateTo('how-it-works')} className={`text-sm font-bold uppercase tracking-widest transition-colors ${currentView === 'how-it-works' ? 'text-emerald-400' : 'text-white/60 hover:text-white'}`}>Process</button>
+            <button onClick={() => navigateTo('pricing')} className={`text-sm font-bold uppercase tracking-widest transition-colors ${currentView === 'pricing' ? 'text-emerald-400' : 'text-white/60 hover:text-white'}`}>Fees</button>
+            <button onClick={() => navigateTo('advisor')} className={`text-sm font-bold uppercase tracking-widest transition-colors ${currentView === 'advisor' ? 'text-emerald-400' : 'text-white/60 hover:text-white'}`}>AI Advisor</button>
+          </nav>
+
+          <div className="hidden lg:flex items-center gap-6">
+            <div className="relative group">
+              <button className="flex items-center gap-2 text-white font-bold text-sm bg-white/5 px-4 py-2 rounded-xl border border-white/10 hover:bg-white/10 transition-colors">
+                <Languages size={16} className="text-emerald-400" />
+                {currentLang}
+                <ChevronDown size={14} />
+              </button>
+              <div className="absolute top-full right-0 mt-2 w-48 bg-[#1a2e2e] border border-white/10 rounded-2xl shadow-2xl opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all p-2 z-50">
+                {(['English', 'Hausa', 'Yoruba', 'Igbo'] as Language[]).map(lang => (
+                  <button 
+                    key={lang}
+                    onClick={() => setCurrentLang(lang)}
+                    className={`w-full text-left px-4 py-3 rounded-xl text-sm font-bold transition-colors ${currentLang === lang ? 'bg-emerald-500 text-[#1a2e2e]' : 'text-white/60 hover:text-white hover:bg-white/5'}`}
+                  >
+                    {lang}
+                  </button>
+                ))}
+              </div>
+            </div>
+            <button onClick={() => navigateTo('how-it-works')} className="bg-emerald-500 text-[#1a2e2e] px-6 py-3 rounded-xl font-black text-sm hover:bg-emerald-400 transition-all shadow-lg shadow-emerald-500/20 active:scale-95">
+              Register Now
             </button>
-          ))}
-          <div className="h-6 w-px bg-slate-200 mx-2"></div>
-          <div className="flex items-center gap-2">
-            <Languages size={16} className="text-emerald-600" />
-            <select 
-              className="bg-transparent text-xs font-bold text-slate-600 focus:outline-none cursor-pointer"
-              value={currentLang}
-              onChange={(e) => setCurrentLang(e.target.value as Language)}
-            >
-              <option value="English">ENG</option>
-              <option value="Hausa">HAU</option>
-              <option value="Yoruba">YOR</option>
-              <option value="Igbo">IGB</option>
-            </select>
           </div>
-          <button onClick={() => navigateTo('how-it-works')} className="bg-[#1a2e2e] text-white px-7 py-3 rounded-full font-black text-sm hover:bg-emerald-700 shadow-xl shadow-emerald-100 transition-all">
-            {translations[currentLang].cta}
+
+          <button 
+            className="lg:hidden p-2 text-white"
+            onClick={() => setIsMenuOpen(!isMenuOpen)}
+          >
+            {isMenuOpen ? <X size={28} /> : <Menu size={28} />}
           </button>
         </div>
+      </div>
 
-        <button 
-          className="lg:hidden p-2 text-slate-900 bg-slate-50 rounded-lg"
-          onClick={() => setIsMenuOpen(!isMenuOpen)}
-        >
-          {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
-        </button>
-      </nav>
+      <div className={`lg:hidden absolute top-20 left-0 right-0 bg-[#1a2e2e] border-b border-white/10 transition-all duration-500 overflow-hidden ${isMenuOpen ? 'max-h-screen opacity-100' : 'max-h-0 opacity-0'}`}>
+        <div className="p-6 flex flex-col gap-6">
+          <button onClick={() => navigateTo('features')} className="text-xl font-black text-white text-left">Features</button>
+          <button onClick={() => navigateTo('how-it-works')} className="text-xl font-black text-white text-left">Process</button>
+          <button onClick={() => navigateTo('pricing')} className="text-xl font-black text-white text-left">Fees</button>
+          <button onClick={() => navigateTo('advisor')} className="text-xl font-black text-white text-left text-emerald-400">AI Advisor</button>
+          
+          <div className="h-px bg-white/5 my-2"></div>
+          
+          <div className="flex flex-wrap gap-2">
+            {(['English', 'Hausa', 'Yoruba', 'Igbo'] as Language[]).map(lang => (
+              <button 
+                key={lang}
+                onClick={() => setCurrentLang(lang)}
+                className={`px-4 py-2 rounded-xl text-sm font-bold border transition-all ${currentLang === lang ? 'bg-emerald-500 border-emerald-500 text-[#1a2e2e]' : 'border-white/10 text-white/60'}`}
+              >
+                {lang}
+              </button>
+            ))}
+          </div>
 
-      {isMenuOpen && (
-        <div className="lg:hidden absolute top-20 left-0 right-0 bg-white border-b border-slate-100 p-6 flex flex-col gap-6 shadow-2xl">
-          {[
-            { id: 'features', label: 'Features' },
-            { id: 'how-it-works', label: 'How it Works' },
-            { id: 'pricing', label: 'Pricing' },
-            { id: 'advisor', label: 'Advisor' }
-          ].map((item) => (
-            <button 
-              key={item.id} 
-              onClick={() => navigateTo(item.id as View)}
-              className="text-lg font-bold text-slate-900 flex items-center justify-between"
-            >
-              {item.label} <ArrowRight className="text-emerald-500" size={20} />
-            </button>
-          ))}
-          <button className="bg-emerald-600 text-white py-5 rounded-2xl font-black text-xl">
-            {translations[currentLang].cta}
+          <button onClick={() => navigateTo('how-it-works')} className="w-full bg-emerald-500 text-[#1a2e2e] py-4 rounded-2xl font-black text-lg mt-4 shadow-xl shadow-emerald-500/20">
+            Start Registration
           </button>
         </div>
-      )}
+      </div>
     </header>
   );
 
+  const HeroSlider = () => {
+    const [currentSlide, setCurrentSlide] = useState(0);
+    const slides = [
+      {
+        url: "https://images.unsplash.com/photo-1544027993-37dbfe43562a?auto=format&fit=crop&q=80&w=1200",
+        title: "Bustling Market Life",
+        caption: "Secure your daily trade in Kano's Kurmi Market."
+      },
+      {
+        url: "https://images.unsplash.com/photo-1563013544-824ae14f4826?auto=format&fit=crop&q=80&w=1200",
+        title: "Digital Payments",
+        caption: "Modernize your collections with QR and USSD."
+      },
+      {
+        url: "https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?auto=format&fit=crop&q=80&w=1200",
+        title: "Empowered Entrepreneurs",
+        caption: "Join thousands of traders building a credit history."
+      },
+      {
+        url: "https://images.unsplash.com/photo-1517048676732-d65bc937f952?auto=format&fit=crop&q=80&w=1200",
+        title: "Community Inclusion",
+        caption: "Financial tools for every street vendor and artisan."
+      },
+      {
+        url: "https://images.unsplash.com/photo-1556742049-13da73367575?auto=format&fit=crop&q=80&w=1200",
+        title: "Success Stories",
+        caption: "From local stalls to verified merchant success."
+      }
+    ];
+
+    const nextSlide = useCallback(() => {
+      setCurrentSlide((prev) => (prev + 1) % slides.length);
+    }, [slides.length]);
+
+    const prevSlide = () => {
+      setCurrentSlide((prev) => (prev - 1 + slides.length) % slides.length);
+    };
+
+    useEffect(() => {
+      const interval = setInterval(nextSlide, 5000);
+      return () => clearInterval(interval);
+    }, [nextSlide]);
+
+    return (
+      <div className="relative w-full h-[300px] md:h-[500px] lg:h-[600px] rounded-[3rem] overflow-hidden shadow-2xl group border-4 border-white/10">
+        {slides.map((slide, index) => (
+          <div
+            key={index}
+            className={`absolute inset-0 transition-opacity duration-1000 ease-in-out ${
+              index === currentSlide ? 'opacity-100' : 'opacity-0'
+            }`}
+          >
+            <img src={slide.url} alt={slide.title} className="w-full h-full object-cover brightness-[0.7]" />
+            <div className="absolute bottom-0 left-0 right-0 p-8 bg-gradient-to-t from-black/80 to-transparent">
+              <h3 className="text-white font-black text-xl mb-1">{slide.title}</h3>
+              <p className="text-emerald-400 font-bold text-sm tracking-wide">{slide.caption}</p>
+            </div>
+          </div>
+        ))}
+        
+        <button 
+          onClick={prevSlide}
+          className="absolute left-4 top-1/2 -translate-y-1/2 p-3 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-white opacity-0 group-hover:opacity-100 transition-opacity"
+        >
+          <ChevronLeft size={24} />
+        </button>
+        <button 
+          onClick={nextSlide}
+          className="absolute right-4 top-1/2 -translate-y-1/2 p-3 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-white opacity-0 group-hover:opacity-100 transition-opacity"
+        >
+          <ChevronRightIcon size={24} />
+        </button>
+
+        <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2">
+          {slides.map((_, index) => (
+            <button
+              key={index}
+              onClick={() => setCurrentSlide(index)}
+              className={`w-2 h-2 rounded-full transition-all ${
+                index === currentSlide ? 'bg-emerald-500 w-6' : 'bg-white/30'
+              }`}
+            />
+          ))}
+        </div>
+      </div>
+    );
+  };
+
   const HomeView = () => (
     <main className="animate-in fade-in duration-700">
-      {/* Hero Section */}
-      <section className="relative pt-32 lg:pt-52 pb-24 lg:pb-40 bg-[#1a2e2e] overflow-hidden">
+      <section className="relative pt-32 lg:pt-48 pb-24 lg:pb-32 bg-[#1a2e2e] overflow-hidden">
         <div className="stars-container">{renderStars(70)}</div>
         <div className="container mx-auto px-4 relative z-10">
-          <div className="flex flex-col lg:flex-row items-center gap-16 lg:gap-24">
+          <div className="flex flex-col lg:flex-row items-center gap-16 lg:gap-12">
             <div className="lg:w-1/2 text-center lg:text-left">
               <div className="inline-flex items-center gap-2 px-4 py-2 bg-emerald-500/10 text-emerald-400 rounded-full text-xs font-black uppercase tracking-widest mb-8 border border-emerald-500/20 reveal">
                 <StarIcon size={14} className="fill-emerald-400 animate-pulse" />
-                <span>Digitizing {currentLang === 'English' ? 'Nigeria' : translations[currentLang].dialect}'s Informal Sector</span>
+                <span>Digitizing {currentLang === 'English' ? 'Nigeria' : translations[currentLang].dialect}'s Market Hustle</span>
               </div>
               <h1 className="text-5xl md:text-7xl lg:text-8xl font-black text-white mb-8 leading-[0.95] tracking-tighter reveal">
                 {translations[currentLang].heroTitle.split('.').map((part, i) => (
@@ -267,7 +336,7 @@ const App: React.FC = () => {
               <p className="text-xl text-emerald-100/60 mb-10 max-w-2xl mx-auto lg:mx-0 leading-relaxed font-medium reveal">
                 {translations[currentLang].heroSub} Secure, cashless payments via *555#. Built for street vendors, market traders, and artisans.
               </p>
-              <div className="flex flex-col sm:flex-row gap-5 justify-center lg:justify-start reveal">
+              <div className="flex flex-col sm:flex-row gap-5 justify-center lg:justify-start reveal mb-12">
                 <button onClick={() => navigateTo('how-it-works')} className="bg-emerald-500 text-[#1a2e2e] px-12 py-5 rounded-2xl font-black text-xl hover:bg-emerald-400 transition-all flex items-center justify-center gap-3 shadow-2xl shadow-emerald-500/30 active:scale-95">
                   Start Registration <ArrowRight size={24} />
                 </button>
@@ -275,88 +344,48 @@ const App: React.FC = () => {
                    Dial <span className="text-emerald-400">*555#</span>
                 </div>
               </div>
-            </div>
-            <div className="lg:w-1/2 w-full max-w-lg mx-auto reveal relative">
-              <div className="simulator-wrapper">
-                <div className="absolute -inset-10 bg-emerald-500/10 rounded-full blur-[100px] animate-pulse"></div>
-                <USSDSimulator />
+              <div className="flex items-center justify-center lg:justify-start gap-8 opacity-40 reveal grayscale text-xs font-bold text-white uppercase tracking-widest">
+                  <div className="flex items-center gap-2"><CheckCircle2 size={16} className="text-emerald-500" /> CBN Approved</div>
+                  <div className="flex items-center gap-2"><CheckCircle2 size={16} className="text-emerald-500" /> NDIC Insured</div>
               </div>
+            </div>
+            <div className="lg:w-1/2 w-full reveal">
+              <HeroSlider />
             </div>
           </div>
         </div>
       </section>
 
-      {/* Partner Trust Section */}
-      <section className="py-12 bg-gray-50 border-y border-slate-100">
-         <div className="container mx-auto px-4">
-            <p className="text-center text-[10px] font-black uppercase tracking-[0.4em] text-slate-400 mb-8">POWERED BY LICENSED NIGERIAN PARTNERS</p>
-            <div className="flex flex-wrap justify-center items-center gap-10 md:gap-20 grayscale opacity-60">
-               <div className="flex items-center gap-2 font-black text-2xl text-slate-900">
-                  <div className="w-8 h-8 bg-blue-600 rounded-lg"></div> Moniepoint
-               </div>
-               <div className="flex items-center gap-2 font-black text-2xl text-slate-900">
-                  <div className="w-8 h-8 bg-emerald-500 rounded-lg"></div> OPay
-               </div>
-               <div className="flex items-center gap-2 font-black text-2xl text-slate-900">
-                  <div className="w-8 h-8 bg-yellow-400 rounded-lg"></div> MTN MoMo
-               </div>
-               <div className="flex items-center gap-2 font-black text-2xl text-slate-900">
-                  <div className="w-8 h-8 bg-red-600 rounded-lg"></div> PalmPay
-               </div>
-            </div>
-         </div>
-      </section>
-
-      {/* Regional Focus Section */}
-      <section className="py-24 bg-white overflow-hidden">
+      {/* Trust & Simulation Section */}
+      <section className="py-24 bg-gray-50 border-y border-slate-100">
         <div className="container mx-auto px-4">
            <div className="flex flex-col lg:flex-row items-center gap-20">
-              <div className="lg:w-1/2 reveal">
-                 <h2 className="text-4xl md:text-6xl font-black text-slate-900 mb-8 leading-tight">Serving the Heart <br /> of <span className="text-emerald-600">Nigerian Commerce.</span></h2>
-                 <p className="text-xl text-slate-500 mb-10 leading-relaxed font-medium">Daily Collect is designed for the reality of Nigeria's informal sector. We bridge the gap between cash-based trade and digital financial growth.</p>
-                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                    {[
-                       { city: "Lagos", market: "Balogun & Alaba", feature: "Fast QR Settlements" },
-                       { city: "Kano", market: "Sabon Gari & Kurmi", feature: "Offline USSD Access" },
-                       { city: "Abuja", market: "Wuse & Garki", feature: "Levy Compliance" },
-                       { city: "Onitsha", market: "Main Market", feature: "Bulk Collection" }
-                    ].map((item, i) => (
-                       <div key={i} className="p-6 bg-slate-50 rounded-3xl border border-slate-100 group hover:bg-emerald-600 hover:border-emerald-600 transition-all">
-                          <MapPin className="text-emerald-500 mb-4 group-hover:text-white" />
-                          <h4 className="font-black text-slate-900 group-hover:text-white text-lg">{item.city}</h4>
-                          <p className="text-slate-500 group-hover:text-emerald-100 text-sm">{item.market}</p>
-                          <div className="mt-4 text-[10px] font-black uppercase tracking-widest text-emerald-600 group-hover:text-white">{item.feature}</div>
-                       </div>
-                    ))}
-                 </div>
+              <div className="lg:w-1/2">
+                <div className="inline-flex items-center gap-2 text-emerald-600 font-black uppercase tracking-widest text-xs mb-4">
+                  <Smartphone size={16} /> <span>Try it yourself</span>
+                </div>
+                <h2 className="text-4xl md:text-5xl font-black text-slate-900 mb-8 leading-tight">No Internet? <br /> <span className="text-emerald-600">No Problem.</span></h2>
+                <p className="text-xl text-slate-500 mb-8 leading-relaxed font-medium">Daily Collect works on any phone, anywhere in Nigeria. From feature phones to smartphones, your business stays digital.</p>
+                <ul className="space-y-4 mb-10">
+                   {['Works on all networks (MTN, Glo, Airtel, 9mobile)', 'Fast, reliable and secure USSD *555#', 'Instant SMS confirmation for every trade'].map(item => (
+                     <li key={item} className="flex items-center gap-3 font-bold text-slate-700">
+                       <CheckCircle2 className="text-emerald-500" size={20} /> {item}
+                     </li>
+                   ))}
+                </ul>
+                <button onClick={() => navigateTo('features')} className="text-emerald-600 font-black flex items-center gap-2 group">
+                  See All Features <ArrowRight className="group-hover:translate-x-2 transition-transform" />
+                </button>
               </div>
-              <div className="lg:w-1/2 relative reveal">
-                 <div className="relative z-10 bg-[#1a2e2e] p-12 rounded-[4rem] text-white shadow-3xl">
-                    <Award className="text-yellow-400 mb-8" size={64} />
-                    <h3 className="text-3xl font-black mb-6 leading-tight">Driving Inclusion at Scale</h3>
-                    <div className="space-y-6">
-                       <div className="flex items-center gap-4">
-                          <div className="w-12 h-12 bg-white/10 rounded-2xl flex items-center justify-center font-black text-emerald-400">80%</div>
-                          <p className="font-medium text-emerald-100/60">Informal workforce contribution to GDP</p>
-                       </div>
-                       <div className="flex items-center gap-4">
-                          <div className="w-12 h-12 bg-white/10 rounded-2xl flex items-center justify-center font-black text-emerald-400">1M+</div>
-                          <p className="font-medium text-emerald-100/60">Targeted merchants by 2026</p>
-                       </div>
-                       <div className="flex items-center gap-4">
-                          <div className="w-12 h-12 bg-white/10 rounded-2xl flex items-center justify-center font-black text-emerald-400">0%</div>
-                          <p className="font-medium text-emerald-100/60">Monthly maintenance fees for traders</p>
-                       </div>
-                    </div>
-                 </div>
-                 <div className="absolute -bottom-10 -right-10 w-64 h-64 bg-emerald-500/20 rounded-full blur-3xl"></div>
+              <div className="lg:w-1/2 w-full max-w-lg mx-auto">
+                 <USSDSimulator />
               </div>
            </div>
         </div>
       </section>
 
-      {/* Testimonials / Success Stories */}
-      <section className="py-24 bg-gray-50">
+      {/* Testimonials */}
+      <section className="py-24 bg-white">
          <div className="container mx-auto px-4">
             <div className="text-center max-w-2xl mx-auto mb-16 reveal">
                <h2 className="text-4xl font-black text-slate-900 mb-4">Stories from the Market</h2>
@@ -368,13 +397,13 @@ const App: React.FC = () => {
                   { name: "Madam Chidimma", role: "Textiles, Onitsha", text: "I like that I can pay my market association dues (*555#) directly. No more manual receipts or losing paper records. Everything is clear." },
                   { name: "Ayo", role: "Shoemaker, Mushin", text: "My customers just dial the code and pay. I get an SMS immediately. It has saved me from thieves who target cash in the evening." }
                ].map((story, i) => (
-                  <div key={i} className="bg-white p-10 rounded-[3rem] border border-slate-100 shadow-sm reveal flex flex-col justify-between">
+                  <div key={i} className="bg-slate-50 p-10 rounded-[3rem] border border-slate-100 shadow-sm reveal flex flex-col justify-between">
                      <div>
                         <MessageCircle className="text-emerald-500 mb-6" size={32} />
                         <p className="text-slate-600 font-medium italic leading-relaxed mb-8">"{story.text}"</p>
                      </div>
                      <div className="flex items-center gap-4">
-                        <div className="w-12 h-12 bg-slate-100 rounded-full flex items-center justify-center font-black text-emerald-600">{story.name[0]}</div>
+                        <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center font-black text-emerald-600 shadow-sm">{story.name[0]}</div>
                         <div>
                            <div className="font-black text-slate-900">{story.name}</div>
                            <div className="text-xs text-slate-400 font-bold uppercase tracking-widest">{story.role}</div>
@@ -382,50 +411,6 @@ const App: React.FC = () => {
                      </div>
                   </div>
                ))}
-            </div>
-         </div>
-      </section>
-
-      {/* FAQ Section */}
-      <section className="py-24 bg-white">
-         <div className="container mx-auto px-4 max-w-4xl">
-            <h2 className="text-4xl font-black text-slate-900 mb-12 text-center">Frequently Asked Questions</h2>
-            <div className="space-y-4">
-               {[
-                  { q: "Do I need internet to use Daily Collect?", a: "No. You can access all business features including registration, collections, and withdrawals via the USSD code *555# on any phone." },
-                  { q: "Is my money safe?", a: "Daily Collect is an intermediary aggregator. Your funds are held by licensed partners like OPay and Moniepoint, which are regulated by the CBN and insured by NDIC." },
-                  { q: "How much are the transaction fees?", a: "Registration is free. Digital collection fees range from 0.5% to 1%, capped at ₦500. Levy processing is a flat ₦10-₦50 fee." },
-                  { q: "How do I get my cash out?", a: "Generate a withdrawal code via *555# and visit any OPay or Moniepoint agent, or any partnered market shop to get your cash." },
-                  { q: "Can I use it in Hausa or Yoruba?", a: "Yes. Our USSD menu and App support English, Hausa, Yoruba, and Igbo to ensure every trader feels at home." }
-               ].map((faq, i) => (
-                  <div key={i} className="reveal border border-slate-100 rounded-2xl overflow-hidden shadow-sm">
-                     <button 
-                        onClick={() => setActiveFaq(activeFaq === i ? null : i)}
-                        className="w-full flex items-center justify-between p-6 text-left hover:bg-slate-50 transition-colors"
-                     >
-                        <span className="font-black text-slate-900">{faq.q}</span>
-                        {activeFaq === i ? <ChevronUp className="text-emerald-500" /> : <ChevronDown className="text-emerald-500" />}
-                     </button>
-                     {activeFaq === i && (
-                        <div className="p-6 pt-0 bg-slate-50 text-slate-600 font-medium leading-relaxed animate-in slide-in-from-top-4 duration-300">
-                           {faq.a}
-                        </div>
-                     )}
-                  </div>
-               ))}
-            </div>
-         </div>
-      </section>
-
-      {/* Final CTA */}
-      <section className="py-24 bg-[#1a2e2e] relative overflow-hidden">
-         <div className="stars-container opacity-20">{renderStars(50)}</div>
-         <div className="container mx-auto px-4 text-center relative z-10">
-            <h2 className="text-5xl md:text-7xl font-black text-white mb-8 tracking-tighter">Ready to Scale Your <br /> <span className="shining-text">Market Hustle?</span></h2>
-            <p className="text-xl text-emerald-100/60 mb-12 max-w-2xl mx-auto font-medium">Join 100,000+ traders already using Daily Collect to build a digital trail for loans and secure revenue.</p>
-            <div className="flex flex-col sm:flex-row gap-6 justify-center">
-               <button onClick={() => navigateTo('how-it-works')} className="bg-emerald-500 text-[#1a2e2e] px-12 py-5 rounded-2xl font-black text-xl hover:bg-emerald-400 transition-all shadow-2xl shadow-emerald-500/30">Get Started Today</button>
-               <button className="bg-white/5 border-2 border-white/10 text-white px-12 py-5 rounded-2xl font-black text-xl">Dial *555#</button>
             </div>
          </div>
       </section>
@@ -583,16 +568,6 @@ const App: React.FC = () => {
              </div>
            ))}
         </div>
-        
-        <div className="mt-20 bg-amber-50 p-10 rounded-[3rem] border border-amber-100 flex flex-col md:flex-row items-center gap-8 reveal">
-           <div className="bg-amber-100 p-6 rounded-2xl text-amber-600">
-              <ShieldAlert size={48} />
-           </div>
-           <div>
-              <h4 className="text-2xl font-black text-amber-900 mb-2">Security & Risk Mitigation</h4>
-              <p className="text-amber-800 font-medium leading-relaxed">Daily Collect is a regulated intermediary. We use CBN-compliant encryption and partner exclusively with licensed deposit-taking institutions. Your funds are never at risk.</p>
-           </div>
-        </div>
       </div>
     </div>
   );
@@ -605,18 +580,15 @@ const App: React.FC = () => {
     </div>
   );
 
-  const HeaderWrap = () => <Header />;
-
   return (
     <div className="min-h-screen bg-white">
-      <HeaderWrap />
+      <Header />
+      {currentView === 'home' && <HomeView />}
       {currentView === 'features' && <FeaturesView />}
       {currentView === 'how-it-works' && <HowItWorksView />}
       {currentView === 'pricing' && <PricingView />}
       {currentView === 'advisor' && <AdvisorView />}
-      {currentView === 'home' && <HomeView />}
       
-      {/* Universal Footer */}
       <footer className="bg-[#1a2e2e] text-white pt-24 pb-12 overflow-hidden relative">
         <div className="stars-container opacity-10">{renderStars(30)}</div>
         <div className="container mx-auto px-4 relative z-10">
@@ -632,26 +604,19 @@ const App: React.FC = () => {
               <p className="text-emerald-100/40 font-medium leading-relaxed max-w-xs mb-8">
                 Leading USSD revenue aggregator for Nigeria's informal heartbeat. From markets to banks.
               </p>
-              <div className="flex gap-4">
-                 {[Globe, Briefcase, TrendingUp].map((Icon, idx) => (
-                    <div key={idx} className="w-10 h-10 rounded-full bg-white/5 border border-white/10 flex items-center justify-center hover:bg-emerald-600 transition-colors cursor-pointer">
-                       <Icon size={18} className="text-emerald-400" />
-                    </div>
-                 ))}
-              </div>
             </div>
             
             {['Services', 'Regional', 'Legal'].map((title, idx) => (
               <div key={idx}>
                 <h5 className="text-xs font-black uppercase tracking-[0.4em] text-emerald-500 mb-10">{title}</h5>
                 <ul className="space-y-5 text-emerald-100/40 font-bold">
-                  {title === 'Services' && ['USSD *555# Gateway', 'Revenue Aggregator', 'Levy Remittance', 'Partner Credit Referrals'].map(l => (
+                  {title === 'Services' && ['USSD *555#', 'Revenue Aggregator', 'Levy Remittance', 'Credit Referrals'].map(l => (
                     <li key={l}><button onClick={() => navigateTo('features')} className="hover:text-emerald-400 text-left transition-colors">{l}</button></li>
                   ))}
-                  {title === 'Regional' && ['Lagos Balogun Hub', 'Kano Sabon Gari Network', 'Abuja Central Markets', 'Port Harcourt Operations'].map(l => (
+                  {title === 'Regional' && ['Lagos Hub', 'Kano Network', 'Abuja Markets', 'Port Harcourt'].map(l => (
                     <li key={l}><button onClick={() => navigateTo('home')} className="hover:text-emerald-400 text-left transition-colors">{l}</button></li>
                   ))}
-                  {title === 'Legal' && ['Privacy Policy', 'KYC & Compliance', 'Terms of Service', 'Security Protocols'].map(l => (
+                  {title === 'Legal' && ['Privacy Policy', 'KYC Guidelines', 'Terms', 'Security'].map(l => (
                     <li key={l}><button className="hover:text-emerald-400 text-left transition-colors">{l}</button></li>
                   ))}
                 </ul>
@@ -671,7 +636,7 @@ const App: React.FC = () => {
           </div>
         </div>
       </footer>
-    </main>
+    </div>
   );
 };
 
