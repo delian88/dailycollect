@@ -1,0 +1,7 @@
+{
+  "name": "Daily Collect Wallet",
+  "description": "A professional digital revenue collection and USSD-based wallet system designed for Nigeria's informal sector traders, artisans, and market associations.",
+  "requestFramePermissions": [
+    "camera"
+  ]
+}
