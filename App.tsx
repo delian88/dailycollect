@@ -118,30 +118,108 @@ const App: React.FC = () => {
 
   const translations = {
     English: {
-      heroTitle: "Nigeria's Most Trusted Wallet.",
-      heroSub: "From Sabon Gari to Balogun Market, Daily Collect secures every kobo through simple USSD access.",
-      cta: "Join the Hustle",
-      dialect: "English"
+      nav: { features: "Features", process: "Process", fees: "Fees", advisor: "AI Advisor", register: "Register Now" },
+      hero: {
+        title: "Nigeria's Most Trusted Wallet.",
+        sub: "From Sabon Gari to Balogun Market, Daily Collect secures every kobo through simple USSD access.",
+        cta: "Start Registration",
+        ussdLabel: "Dial *555#",
+        badge: "Digitizing Nigeria's Market Hustle"
+      },
+      trust: {
+        simulator: "Try the *555# Simulator",
+        title: "No Internet? No Problem.",
+        sub: "Daily Collect works on any phone, anywhere in Nigeria. From feature phones to smartphones, your business stays digital.",
+        features: ["Works on all networks", "Fast USSD Gateway", "Instant SMS Alerts"],
+        more: "See All Features"
+      },
+      stories: {
+        title: "Stories from the Market",
+        sub: "Real impact on real traders across Nigeria."
+      },
+      footer: {
+        desc: "Leading USSD revenue aggregator for Nigeria's informal heartbeat. From markets to banks.",
+        copyright: "© 2024 DAILY COLLECT WALLET. DRIVING FINANCIAL INCLUSION ACROSS NIGERIA."
+      }
     },
     Hausa: {
-      heroTitle: "Aljihun Digital Mafi Amintacciya.",
-      heroSub: "Daga Sabon Gari zuwa Kurmi, Daily Collect na kiyaye kowane kobo ta hanyar USSD mai sauki.",
-      cta: "Shiga cikin Kasuwancin",
-      dialect: "Hausa"
+      nav: { features: "Siffofi", process: "Tsari", fees: "Kudade", advisor: "Mashawarcin AI", register: "Yi Rajista Yanzu" },
+      hero: {
+        title: "Aljihun Digital Mafi Amintacciya.",
+        sub: "Daga Sabon Gari zuwa Kasuwar Balogun, Daily Collect yana kiyaye kowane kobo ta hanyar USSD mai sauki.",
+        cta: "Fara Rajista",
+        ussdLabel: "Kira *555#",
+        badge: "Inganta Kasuwannin Najeriya"
+      },
+      trust: {
+        simulator: "Gwada *555# Simulator",
+        title: "Babu Internet? Babu Matsala.",
+        sub: "Daily Collect yana aiki akan kowace waya, ko'ina a Najeriya. Kasuwancin ku zai cigaba da kasancewa a matakin digital.",
+        features: ["Yana aiki akan kowane network", "USSD mai sauri", "Sakon SMS nan take"],
+        more: "Duba dukkan Siffofin"
+      },
+      stories: {
+        title: "Labarai daga Kasuwa",
+        sub: "Tasiri na gaske akan yan kasuwa a fadin Najeriya."
+      },
+      footer: {
+        desc: "Babban mai tara kudaden shiga na USSD ga zuciyar Najeriya. Daga kasuwanni zuwa bankuna.",
+        copyright: "© 2024 DAILY COLLECT WALLET. KYAUTATA HARKAR KUDI A NAJERIYA."
+      }
     },
     Yoruba: {
-      heroTitle: "Apò Digital Tí Ó Jẹ́ Amúyẹ Jùlọ.",
-      heroSub: "Láti Ọjà Balogun dé ibikíbi, Daily Collect ń sọ́ gbogbo kóbò rẹ pẹ̀lú kòòdù USSD tó rọrùn.",
-      cta: "Darapọ̀ mọ́ Iṣẹ́ Àpọ̀nlé",
-      dialect: "Yoruba"
+      nav: { features: "Àwọn Àwòrán", process: "Ìlànà", fees: "Àwọn Owó", advisor: "Olùdámọ̀ràn AI", register: "Forúkọsílẹ̀ Nísinsìnyí" },
+      hero: {
+        title: "Àpò Digital Tí Ó Jẹ́ Amúyẹ Jùlọ.",
+        sub: "Láti Ọjà Balogun dé ibikíbi, Daily Collect ń sọ́ gbogbo kóbò rẹ pẹ̀lú kòòdù USSD tó rọrùn.",
+        cta: "Bẹ̀rẹ̀ Ìforúkọsílẹ̀",
+        ussdLabel: "Tẹ *555#",
+        badge: "Sísọ Ọjà Nàìjíríà di Digital"
+      },
+      trust: {
+        simulator: "Dán *555# Simulator wò",
+        title: "Kò sí Íńtánẹ́ẹ̀tì? Kò sí ìṣòro.",
+        sub: "Daily Collect ń ṣiṣẹ́ lórí fónù èyíkéyìí, níbikíbi ní Nàìjíríà. Iṣẹ́ rẹ yóò di digital pẹ̀lú wa.",
+        features: ["Ó ń ṣiṣẹ́ lórí gbogbo nẹ́tíwọ́ọ̀kì", "USSD tó yá", "SMS lẹ́sẹ̀kẹsẹ̀"],
+        more: "Wo gbogbo Àwọn Àwòrán"
+      },
+      stories: {
+        title: "Àwọn Ìtàn láti Ọjà",
+        sub: "Ìpa gidi lórí àwọn oníṣòwò kárí Nàìjíríà."
+      },
+      footer: {
+        desc: "Olùkójọ kudaden shiga USSD tó jà fáfá fún Nàìjíríà. Láti ọjà sí báńkì.",
+        copyright: "© 2024 DAILY COLLECT WALLET. ÌGBÉGA ÌRÒNÙ ÌṢÚNÁ NÍ NÀÌJÍRÍÀ."
+      }
     },
     Igbo: {
-      heroTitle: "Akpa Ego Digital Kasị Tụnyere.",
-      heroSub: "Site n'ahịa Onitsha gaa Balogun, Daily Collect na-echekwa ego gị niile site na koodu USSD dị mfe.",
-      cta: "Soro na Azụmaahịa",
-      dialect: "Igbo"
+      nav: { features: "Atụmatụ", process: "Usoro", fees: "Ego", advisor: "Onye Ndụmọdụ AI", register: "Debanye aha ugbu a" },
+      hero: {
+        title: "Akpa Ego Digital Kasị Tụnyere.",
+        sub: "Site n'ahịa Onitsha gaa Balogun, Daily Collect na-echekwa ego gị niile site na koodu USSD dị mfe.",
+        cta: "Malite Ndebanye aha",
+        ussdLabel: "Pịa *555#",
+        badge: "Ịme ka Azụmaahịa Naịjirịa gaa n'ihu"
+      },
+      trust: {
+        simulator: "Nwaa *555# Simulator",
+        title: "Enweghị Interneti? Enweghị nsogbu.",
+        sub: "Daily Collect na-arụ ọrụ na ekwentị ọ bụla, ebe ọ bụla na Naịjirịa. Azụmaahịa gị ga-adị mma.",
+        features: ["Ọ na-arụ ọrụ na netwọk niile", "USSD dị ngwa", "Sakon SMS ozugbo"],
+        more: "Hụ Atụmatụ niile"
+      },
+      stories: {
+        title: "Akụkọ si n'Ahịa",
+        sub: "Ezigbo mmetụta n'ahụ ndị ahịa na Naịjirịa niile."
+      },
+      footer: {
+        desc: "Onye ndu na nchịkọta kudaden shiga USSD maka Naịjirịa. Site n'ahịa gaa n'ụlọ akụ.",
+        copyright: "© 2024 DAILY COLLECT WALLET. ỊKWALITE ỊGỤNAYE MMADỤ NIILE N'AZỤMAAHỊA NA NAỊJỊRỊA."
+      }
     }
   };
+
+  const t = translations[currentLang];
 
   const Header = () => (
     <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isMenuOpen ? 'bg-[#1a2e2e]' : 'bg-[#1a2e2e]/80 backdrop-blur-lg border-b border-white/5'}`}>
@@ -159,10 +237,10 @@ const App: React.FC = () => {
           </div>
 
           <nav className="hidden lg:flex items-center gap-8">
-            <button onClick={() => navigateTo('features')} className={`text-sm font-bold uppercase tracking-widest transition-colors ${currentView === 'features' ? 'text-emerald-400' : 'text-white/60 hover:text-white'}`}>Features</button>
-            <button onClick={() => navigateTo('how-it-works')} className={`text-sm font-bold uppercase tracking-widest transition-colors ${currentView === 'how-it-works' ? 'text-emerald-400' : 'text-white/60 hover:text-white'}`}>Process</button>
-            <button onClick={() => navigateTo('pricing')} className={`text-sm font-bold uppercase tracking-widest transition-colors ${currentView === 'pricing' ? 'text-emerald-400' : 'text-white/60 hover:text-white'}`}>Fees</button>
-            <button onClick={() => navigateTo('advisor')} className={`text-sm font-bold uppercase tracking-widest transition-colors ${currentView === 'advisor' ? 'text-emerald-400' : 'text-white/60 hover:text-white'}`}>AI Advisor</button>
+            <button onClick={() => navigateTo('features')} className={`text-sm font-bold uppercase tracking-widest transition-colors ${currentView === 'features' ? 'text-emerald-400' : 'text-white/60 hover:text-white'}`}>{t.nav.features}</button>
+            <button onClick={() => navigateTo('how-it-works')} className={`text-sm font-bold uppercase tracking-widest transition-colors ${currentView === 'how-it-works' ? 'text-emerald-400' : 'text-white/60 hover:text-white'}`}>{t.nav.process}</button>
+            <button onClick={() => navigateTo('pricing')} className={`text-sm font-bold uppercase tracking-widest transition-colors ${currentView === 'pricing' ? 'text-emerald-400' : 'text-white/60 hover:text-white'}`}>{t.nav.fees}</button>
+            <button onClick={() => navigateTo('advisor')} className={`text-sm font-bold uppercase tracking-widest transition-colors ${currentView === 'advisor' ? 'text-emerald-400' : 'text-white/60 hover:text-white'}`}>{t.nav.advisor}</button>
           </nav>
 
           <div className="hidden lg:flex items-center gap-6">
@@ -185,7 +263,7 @@ const App: React.FC = () => {
               </div>
             </div>
             <button onClick={() => navigateTo('how-it-works')} className="bg-emerald-500 text-[#1a2e2e] px-6 py-3 rounded-xl font-black text-sm hover:bg-emerald-400 transition-all shadow-lg shadow-emerald-500/20 active:scale-95">
-              Register Now
+              {t.nav.register}
             </button>
           </div>
 
@@ -200,10 +278,10 @@ const App: React.FC = () => {
 
       <div className={`lg:hidden absolute top-20 left-0 right-0 bg-[#1a2e2e] border-b border-white/10 transition-all duration-500 overflow-hidden ${isMenuOpen ? 'max-h-screen opacity-100' : 'max-h-0 opacity-0'}`}>
         <div className="p-6 flex flex-col gap-6">
-          <button onClick={() => navigateTo('features')} className="text-xl font-black text-white text-left">Features</button>
-          <button onClick={() => navigateTo('how-it-works')} className="text-xl font-black text-white text-left">Process</button>
-          <button onClick={() => navigateTo('pricing')} className="text-xl font-black text-white text-left">Fees</button>
-          <button onClick={() => navigateTo('advisor')} className="text-xl font-black text-white text-left text-emerald-400">AI Advisor</button>
+          <button onClick={() => navigateTo('features')} className="text-xl font-black text-white text-left">{t.nav.features}</button>
+          <button onClick={() => navigateTo('how-it-works')} className="text-xl font-black text-white text-left">{t.nav.process}</button>
+          <button onClick={() => navigateTo('pricing')} className="text-xl font-black text-white text-left">{t.nav.fees}</button>
+          <button onClick={() => navigateTo('advisor')} className="text-xl font-black text-white text-left text-emerald-400">{t.nav.advisor}</button>
           
           <div className="h-px bg-white/5 my-2"></div>
           
@@ -220,7 +298,7 @@ const App: React.FC = () => {
           </div>
 
           <button onClick={() => navigateTo('how-it-works')} className="w-full bg-emerald-500 text-[#1a2e2e] py-4 rounded-2xl font-black text-lg mt-4 shadow-xl shadow-emerald-500/20">
-            Start Registration
+            {t.nav.register}
           </button>
         </div>
       </div>
@@ -324,24 +402,24 @@ const App: React.FC = () => {
             <div className="lg:w-1/2 text-center lg:text-left">
               <div className="inline-flex items-center gap-2 px-4 py-2 bg-emerald-500/10 text-emerald-400 rounded-full text-xs font-black uppercase tracking-widest mb-8 border border-emerald-500/20 reveal">
                 <StarIcon size={14} className="fill-emerald-400 animate-pulse" />
-                <span>Digitizing {currentLang === 'English' ? 'Nigeria' : translations[currentLang].dialect}'s Market Hustle</span>
+                <span>{t.hero.badge}</span>
               </div>
               <h1 className="text-5xl md:text-7xl lg:text-8xl font-black text-white mb-8 leading-[0.95] tracking-tighter reveal">
-                {translations[currentLang].heroTitle.split('.').map((part, i) => (
+                {t.hero.title.split('.').map((part, i) => (
                   <React.Fragment key={i}>
                     {i === 1 ? <span className="shining-text">{part}</span> : part}
                   </React.Fragment>
                 ))}
               </h1>
               <p className="text-xl text-emerald-100/60 mb-10 max-w-2xl mx-auto lg:mx-0 leading-relaxed font-medium reveal">
-                {translations[currentLang].heroSub} Secure, cashless payments via *555#. Built for street vendors, market traders, and artisans.
+                {t.hero.sub}
               </p>
               <div className="flex flex-col sm:flex-row gap-5 justify-center lg:justify-start reveal mb-12">
                 <button onClick={() => navigateTo('how-it-works')} className="bg-emerald-500 text-[#1a2e2e] px-12 py-5 rounded-2xl font-black text-xl hover:bg-emerald-400 transition-all flex items-center justify-center gap-3 shadow-2xl shadow-emerald-500/30 active:scale-95">
-                  Start Registration <ArrowRight size={24} />
+                  {t.hero.cta} <ArrowRight size={24} />
                 </button>
                 <div className="bg-white/5 border-2 border-white/10 text-white px-12 py-5 rounded-2xl font-black text-xl flex items-center justify-center gap-2">
-                   Dial <span className="text-emerald-400">*555#</span>
+                   {t.hero.ussdLabel}
                 </div>
               </div>
               <div className="flex items-center justify-center lg:justify-start gap-8 opacity-40 reveal grayscale text-xs font-bold text-white uppercase tracking-widest">
@@ -362,19 +440,23 @@ const App: React.FC = () => {
            <div className="flex flex-col lg:flex-row items-center gap-20">
               <div className="lg:w-1/2">
                 <div className="inline-flex items-center gap-2 text-emerald-600 font-black uppercase tracking-widest text-xs mb-4">
-                  <Smartphone size={16} /> <span>Try it yourself</span>
+                  <Smartphone size={16} /> <span>{t.trust.simulator}</span>
                 </div>
-                <h2 className="text-4xl md:text-5xl font-black text-slate-900 mb-8 leading-tight">No Internet? <br /> <span className="text-emerald-600">No Problem.</span></h2>
-                <p className="text-xl text-slate-500 mb-8 leading-relaxed font-medium">Daily Collect works on any phone, anywhere in Nigeria. From feature phones to smartphones, your business stays digital.</p>
+                <h2 className="text-4xl md:text-5xl font-black text-slate-900 mb-8 leading-tight">{t.trust.title.split('?').map((part, i) => (
+                  <React.Fragment key={i}>
+                    {part}{i === 0 ? '?' : ''} {i === 1 ? <span className="text-emerald-600">{part}</span> : ''}
+                  </React.Fragment>
+                ))}</h2>
+                <p className="text-xl text-slate-500 mb-8 leading-relaxed font-medium">{t.trust.sub}</p>
                 <ul className="space-y-4 mb-10">
-                   {['Works on all networks (MTN, Glo, Airtel, 9mobile)', 'Fast, reliable and secure USSD *555#', 'Instant SMS confirmation for every trade'].map(item => (
+                   {t.trust.features.map(item => (
                      <li key={item} className="flex items-center gap-3 font-bold text-slate-700">
                        <CheckCircle2 className="text-emerald-500" size={20} /> {item}
                      </li>
                    ))}
                 </ul>
                 <button onClick={() => navigateTo('features')} className="text-emerald-600 font-black flex items-center gap-2 group">
-                  See All Features <ArrowRight className="group-hover:translate-x-2 transition-transform" />
+                  {t.trust.more} <ArrowRight className="group-hover:translate-x-2 transition-transform" />
                 </button>
               </div>
               <div className="lg:w-1/2 w-full max-w-lg mx-auto">
@@ -388,8 +470,8 @@ const App: React.FC = () => {
       <section className="py-24 bg-white">
          <div className="container mx-auto px-4">
             <div className="text-center max-w-2xl mx-auto mb-16 reveal">
-               <h2 className="text-4xl font-black text-slate-900 mb-4">Stories from the Market</h2>
-               <p className="text-slate-500 font-medium">Real impact on real traders across Nigeria.</p>
+               <h2 className="text-4xl font-black text-slate-900 mb-4">{t.stories.title}</h2>
+               <p className="text-slate-500 font-medium">{t.stories.sub}</p>
             </div>
             <div className="grid md:grid-cols-3 gap-8">
                {[
@@ -602,7 +684,7 @@ const App: React.FC = () => {
                 </div>
               </div>
               <p className="text-emerald-100/40 font-medium leading-relaxed max-w-xs mb-8">
-                Leading USSD revenue aggregator for Nigeria's informal heartbeat. From markets to banks.
+                {t.footer.desc}
               </p>
             </div>
             
@@ -626,7 +708,7 @@ const App: React.FC = () => {
 
           <div className="pt-12 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-10">
             <div className="text-emerald-100/20 text-[10px] font-black uppercase tracking-[0.3em] text-center md:text-left">
-              © 2024 DAILY COLLECT WALLET. DRIVING FINANCIAL INCLUSION ACROSS NIGERIA.
+              {t.footer.copyright}
             </div>
             <div className="flex gap-10 text-[9px] font-black tracking-[0.2em] text-emerald-500/40 uppercase">
                <span className="flex items-center gap-2"><ShieldCheck size={12} /> NDIC Insured</span>
